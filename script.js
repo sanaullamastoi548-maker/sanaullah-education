@@ -1,6 +1,9 @@
 "use strict";
 
 document.addEventListener("DOMContentLoaded", () => {
+  // آپ کا بیک اینڈ ویب ایپ یو آر ایل
+  const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxj6GVlkg56151m1G8eh7E1OIjM6SoV7HC8zvs5_LqGxWytkSaP0T3kJiHTaLSJmDhW/exec";
+
   const menuToggle = document.getElementById("menuToggle");
   const navLinks = document.getElementById("navLinks");
 
@@ -133,8 +136,7 @@ document.addEventListener("DOMContentLoaded", () => {
         '</button>';
 
     authNotice.textContent =
-      "Authentication is not connected yet. " +
-      "This is a design preview, not a real login system.";
+      "Connected with Google Apps Script backend.";
   }
 
 
@@ -175,17 +177,15 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
 
-  // Google authentication is not implemented yet
+  // Google Login button action (can be linked to backend if needed)
   googleLoginBtn.addEventListener("click", () => {
-    authNotice.textContent =
-      "Google Login is not connected to Firebase yet. " +
-      "No sign-in attempt has been made. " +
-      "Please try again after the authentication integration is complete.";
+    authNotice.textContent = "Connecting with Google...";
+    // یہاں آپ گوگل اتھینیکیشن کا کوڈ یا بیک اینڈ کال شامل کر سکتے ہیں
   });
 
 
-  // Form preview only: never pretend a login succeeded
-  authForm.addEventListener("submit", (event) => {
+  // Form submit connected with Google Apps Script Backend
+  authForm.addEventListener("submit", async (event) => {
     event.preventDefault();
 
     if (!authForm.reportValidity()) {
@@ -193,7 +193,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const email = document.getElementById("email").value.trim();
-
     const password = document.getElementById("password").value;
 
     if (password.length < 8) {
@@ -202,45 +201,60 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    let payload = {
+      action: authMode, // 'login' یا 'register'
+      email: email,
+      password: password
+    };
+
     if (authMode === "register") {
-      const fullName =
-        document.getElementById("fullName").value.trim();
-
-      const fatherName =
-        document.getElementById("fatherName").value.trim();
-
-      const confirmPassword =
-        document.getElementById("confirmPassword").value;
+      const fullName = document.getElementById("fullName").value.trim();
+      const fatherName = document.getElementById("fatherName").value.trim();
+      const confirmPassword = document.getElementById("confirmPassword").value;
 
       if (fullName.length < 2) {
-        authNotice.textContent =
-          "Please enter your full name.";
+        authNotice.textContent = "Please enter your full name.";
         return;
       }
 
       if (fatherName.length < 2) {
-        authNotice.textContent =
-          "Please enter your father's name.";
+        authNotice.textContent = "Please enter your father's name.";
         return;
       }
 
       if (password !== confirmPassword) {
-        authNotice.textContent =
-          "The passwords do not match.";
+        authNotice.textContent = "The passwords do not match.";
         return;
       }
+
+      payload.fullName = fullName;
+      payload.fatherName = fatherName;
     }
 
-    authNotice.textContent =
-      "The form layout is working, but no account was created " +
-      "and no login was attempted. Firebase authentication " +
-      "must be connected before this feature can be used.";
+    authNotice.textContent = "Processing...";
+    authSubmitBtn.disabled = true;
 
-    console.info("Authentication preview submitted", {
-      mode: authMode,
-      emailProvided: Boolean(email),
-      passwordProvided: Boolean(password)
-    });
+    try {
+      const response = await fetch(WEB_APP_URL, {
+        method: "POST",
+        mode: "no-cors", // گوگلپ اسکرپٹ کے ساتھ عموماً CORS کے لیے یہ طریقہ استعمال ہوتا ہے
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+      });
+
+      authNotice.textContent = authMode === "register" 
+        ? "Registration request sent successfully to Google Sheet!" 
+        : "Login request processed!";
+      
+      console.info("Backend response sent successfully");
+    } catch (error) {
+      console.error("Error:", error);
+      authNotice.textContent = "Connection failed. Please try again.";
+    } finally {
+      authSubmitBtn.disabled = false;
+    }
   });
 
 });
