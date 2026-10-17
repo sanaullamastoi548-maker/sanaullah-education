@@ -2,7 +2,8 @@
 
 document.addEventListener("DOMContentLoaded", () => {
   // آپ کا بیک اینڈ ویب ایپ یو آر ایل
-  const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxj6GVlkg56151m1G8eh7E1OIjM6SoV7HC8zvs5_LqGxWytkSaP0T3kJiHTaLSJmDhW/exec";
+  const WEB_APP_URL = "۔const SCRIPT_URL ="https://script.google.com/macros/s/AKfycbxj6GVlkg56151m1G8eh7E1OIjM6SoV7HC8zvs5_LqGxWytkSaP0T3kJiHTaLSJmDhW/exec";
+  ";
 
   const menuToggle = document.getElementById("menuToggle");
   const navLinks = document.getElementById("navLinks");
