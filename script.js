@@ -1,11 +1,6 @@
-// ==========================================
-// 0. Google Apps Script Web App URL
-// ==========================================
+// آپ کا ایپس اسکرپٹ ویب ایپ یو آر ایل
 const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxj6GVlkg56151m1G8eh7E1OIjM6SoV7HC8zvs5_LqGxWytkSaP0T3kJiHTaLSJmDhW/exec';
 
-// ==========================================
-// 1. Selecting DOM Elements
-// ==========================================
 const authContainer = document.getElementById('authContainer');
 const mainDashboard = document.getElementById('mainDashboard');
 const logoutBtn = document.getElementById('logoutBtn');
@@ -16,9 +11,7 @@ const loginFormBox = document.getElementById('loginFormBox');
 const goToLogin = document.getElementById('goToLogin');
 const goToSignUp = document.getElementById('goToSignUp');
 
-// ==========================================
-// 2. Toggle Between Login & Sign Up Forms
-// ==========================================
+// فارಮ್ بدلنے کے لیے (Login / Sign Up Switch)
 goToLogin.addEventListener('click', () => {
   signUpFormBox.style.display = 'none';
   loginFormBox.style.display = 'block';
@@ -31,9 +24,7 @@ goToSignUp.addEventListener('click', () => {
   authContainer.classList.remove('active-login');
 });
 
-// ==========================================
-// 3. Registration Form Submission Handler
-// ==========================================
+// رجسٹریشن فارم سبمٹ ہونے پر شیٹ میں ڈیٹا بھیجنا
 document.getElementById('regForm').addEventListener('submit', function(e) {
   e.preventDefault();
   
@@ -44,9 +35,9 @@ document.getElementById('regForm').addEventListener('submit', function(e) {
   
   const submitBtn = this.querySelector('.action-btn');
   submitBtn.disabled = true;
-  submitBtn.innerText = 'رجسٹریشن ہو رہی ہے...';
+  submitBtn.innerText = 'Processing...';
 
-  // Student record object matching your Google Sheet headers
+  // شیٹ کے کالمز کے مطابق ڈیٹا کا ابجیکٹ
   const studentRecord = {
     action: "register",
     Student_ID: "STD-" + Math.floor(10000 + Math.random() * 90000),
@@ -64,7 +55,6 @@ document.getElementById('regForm').addEventListener('submit', function(e) {
     Last_Logout: ""
   };
 
-  // Sending data to Google Sheets via Apps Script
   fetch(GOOGLE_SCRIPT_URL, {
     method: 'POST',
     mode: 'no-cors',
@@ -77,17 +67,15 @@ document.getElementById('regForm').addEventListener('submit', function(e) {
   })
   .catch(error => {
     console.error('Error:', error);
-    alert('کچھ مسئلہ پیش آیا، براہ کرم دوبارہ کوشش کریں۔');
+    alert('کچھ مسئلہ پیش آیا، دوبارہ کوشش کریں۔');
   })
   .finally(() => {
     submitBtn.disabled = false;
-    submitBtn.innerText = 'رجسٹر کریں (Sign Up)';
+    submitBtn.innerText = 'Sign Up';
   });
 });
 
-// ==========================================
-// 4. Login Form Submission Handler
-// ==========================================
+// لاگ ان فارم ہینڈلر
 document.getElementById('loginForm').addEventListener('submit', function(e) {
   e.preventDefault();
   const email = document.getElementById('loginEmail').value;
@@ -95,26 +83,12 @@ document.getElementById('loginForm').addEventListener('submit', function(e) {
   openDashboard(email);
 });
 
-// ==========================================
-// 5. Direct Email / Google Connect Handler
-// ==========================================
-document.getElementById('googleConnectBtn').addEventListener('click', function() {
-  alert('Successfully completed!');
-  openDashboard("user.email@scaleflow.com");
-});
-
-// ==========================================
-// 6. Open Dashboard Function
-// ==========================================
 function openDashboard(email) {
   userEmailDisplay.innerText = "Logged in as: " + email;
   authContainer.style.display = 'none';
   mainDashboard.style.display = 'flex';
 }
 
-// ==========================================
-// 7. Logout Handler
-// ==========================================
 logoutBtn.addEventListener('click', () => {
   mainDashboard.style.display = 'none';
   authContainer.style.display = 'flex';
