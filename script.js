@@ -1,244 +1,116 @@
-"use strict";
+// آپ کا ایپس اسکرپٹ ویب ایپ یو آر ایل
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxj6GVlkg56151m1G8eh7E1OIjM6SoV7HC8zvs5_LqGxWytkSaP0T3kJiHTaLSJmDhW/exec';
 
-document.addEventListener("DOMContentLoaded", () => {
-  // آپ کا بیک اینڈ ویب ایپ یو آر ایل (درست کیا گیا)
-  const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxj6GVlkg56151m1G8eh7E1OIjM6SoV7HC8zvs5_LqGxWytkSaP0T3kJiHTaLSJmDhW/exec";
+document.addEventListener('DOMContentLoaded', () => {
+  const authModal = document.getElementById('authModal');
+  const authForm = document.getElementById('authForm');
+  const authTitle = document.getElementById('authTitle');
+  const authSubmitBtn = document.getElementById('authSubmitBtn');
+  const nameField = document.getElementById('nameField');
+  const fatherField = document.getElementById('fatherField');
+  const confirmPasswordField = document.getElementById('confirmPasswordField');
+  const authSwitch = document.getElementById('authSwitch');
 
-  const menuToggle = document.getElementById("menuToggle");
-  const navLinks = document.getElementById("navLinks");
-
-  const authModal = document.getElementById("authModal");
-  const authTitle = document.getElementById("authTitle");
-  const authDescription = document.getElementById("authDescription");
-  const authNotice = document.getElementById("authNotice");
-
-  const authForm = document.getElementById("authForm");
-  const authSwitch = document.getElementById("authSwitch");
-  const authSubmitBtn = document.getElementById("authSubmitBtn");
-
-  const nameField = document.getElementById("nameField");
-  const fatherField = document.getElementById("fatherField");
-  const passwordField = document.getElementById("passwordField");
-  const confirmPasswordField = document.getElementById("confirmPasswordField");
-
-  const googleLoginBtn = document.getElementById("googleLoginBtn");
-  const currentYear = document.getElementById("currentYear");
-
-  let authMode = "login";
-
-  // Footer year
-  if (currentYear) {
-    currentYear.textContent = String(new Date().getFullYear());
-  }
-
-  // Mobile navigation
-  if (menuToggle && navLinks) {
-    menuToggle.addEventListener("click", () => {
-      const isOpen = navLinks.classList.toggle("is-open");
-      menuToggle.setAttribute("aria-expanded", String(isOpen));
-    });
-
-    navLinks.querySelectorAll("a").forEach((link) => {
-      link.addEventListener("click", () => {
-        navLinks.classList.remove("is-open");
-        menuToggle.setAttribute("aria-expanded", "false");
-      });
-    });
-  }
-
-  // Open authentication modal
-  function openAuth(mode) {
-    authMode = mode === "register" ? "register" : "login";
-
-    updateAuthInterface();
-
-    authModal.classList.add("is-open");
-    authModal.setAttribute("aria-hidden", "false");
-
-    document.body.style.overflow = "hidden";
-
-    const firstInput = authModal.querySelector("input:not([type='hidden'])");
-
-    if (firstInput) {
-      window.setTimeout(() => firstInput.focus(), 100);
-    }
-  }
-
-  // Close authentication modal
-  function closeAuth() {
-    authModal.classList.remove("is-open");
-    authModal.setAttribute("aria-hidden", "true");
-
-    document.body.style.overflow = "";
-  }
-
-  // Update login/register appearance
-  function updateAuthInterface() {
-    const isRegister = authMode === "register";
-
-    authTitle.textContent = isRegister ? "Create Your Account" : "Welcome Back";
-
-    authDescription.textContent = isRegister
-      ? "Prepare to begin your learning journey."
-      : "Sign in to continue your learning journey.";
-
-    authSubmitBtn.textContent = isRegister ? "Create Account" : "Sign In";
-
-    if (nameField) nameField.hidden = !isRegister;
-    if (fatherField) fatherField.hidden = !isRegister;
-    if (confirmPasswordField) confirmPasswordField.hidden = !isRegister;
-
-    const passwordInput = document.getElementById("password");
-    const confirmPasswordInput = document.getElementById("confirmPassword");
-    const fullNameInput = document.getElementById("fullName");
-
-    if (passwordInput) {
-      passwordInput.autocomplete = isRegister ? "new-password" : "current-password";
-      passwordInput.value = "";
-      passwordInput.required = true;
-    }
-
-    if (confirmPasswordInput) {
-      confirmPasswordInput.value = "";
-      confirmPasswordInput.required = isRegister;
-    }
-
-    if (fullNameInput) {
-      fullNameInput.required = isRegister;
-    }
-
-    if (authSwitch) {
-      authSwitch.innerHTML = isRegister
-        ? 'Already have an account? <button type="button" data-switch-auth="login">Sign in</button>'
-        : 'New student? <button type="button" data-switch-auth="register">Create an account</button>';
-    }
-
-    if (authNotice) {
-      authNotice.textContent = "Connected with Google Apps Script backend.";
-    }
-  }
-
-  // Open modal buttons
-  document.querySelectorAll("[data-open-auth]").forEach((button) => {
-    button.addEventListener("click", () => {
-      openAuth(button.dataset.openAuth);
+  // موڈل کھولنے کے لیے بٹن ہینڈلرز
+  document.querySelectorAll('[data-open-auth]').forEach(button => {
+    button.addEventListener('click', () => {
+      setAuthMode(button.getAttribute('data-open-auth'));
+      authModal.classList.add('is-open');
     });
   });
 
-  // Close modal buttons
-  document.querySelectorAll("[data-close-modal]").forEach((button) => {
-    button.addEventListener("click", closeAuth);
+  // موڈل بند کرنے کے لیے
+  document.querySelectorAll('[data-close-modal]').forEach(button => {
+    button.addEventListener('click', () => {
+      authModal.classList.remove('is-open');
+    });
   });
 
-  // Switch login/register
+  // لاگ ان اور سائن اپ کے درمیان سوئچ کرنے کے لیے
   if (authSwitch) {
-    authSwitch.addEventListener("click", (event) => {
-      const button = event.target.closest("[data-switch-auth]");
-      if (!button) return;
-      openAuth(button.dataset.switchAuth);
-    });
-  }
-
-  // Close with Escape
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape" && authModal && authModal.classList.contains("is-open")) {
-      closeAuth();
-    }
-  });
-
-  // Google Login button action
-  if (googleLoginBtn) {
-    googleLoginBtn.addEventListener("click", () => {
-      if (authNotice) authNotice.textContent = "Connecting with Google...";
-    });
-  }
-
-  // Form submit connected with Google Apps Script Backend
-  if (authForm) {
-    authForm.addEventListener("submit", async (event) => {
-      event.preventDefault();
-
-      if (!authForm.reportValidity()) return;
-
-      const emailInput = document.getElementById("email");
-      const passwordInput = document.getElementById("password");
-
-      const email = emailInput ? emailInput.value.trim() : "";
-      const password = passwordInput ? passwordInput.value : "";
-
-      if (password.length < 8) {
-        if (authNotice) authNotice.textContent = "Please use a password with at least 8 characters.";
-        return;
+    authSwitch.addEventListener('click', (e) => {
+      if (e.target.tagName === 'BUTTON') {
+        setAuthMode(e.target.getAttribute('data-switch-auth'));
       }
+    });
+  }
 
-      let payload = {
-        action: authMode, // 'login' یا 'register'
-        email: email,
-        password: password
-      };
+  function setAuthMode(mode) {
+    if (mode === 'register') {
+      authTitle.innerText = 'Create Account';
+      authSubmitBtn.innerText = 'Sign Up';
+      nameField.removeAttribute('hidden');
+      fatherField.removeAttribute('hidden');
+      confirmPasswordField.removeAttribute('hidden');
+      authSwitch.innerHTML = 'Already have an account? <button type="button" data-switch-auth="login">Login</button>';
+    } else {
+      authTitle.innerText = 'Welcome Back';
+      authSubmitBtn.innerText = 'Sign In';
+      nameField.setAttribute('hidden', 'true');
+      fatherField.setAttribute('hidden', 'true');
+      confirmPasswordField.setAttribute('hidden', 'true');
+      authSwitch.innerHTML = 'New student? <button type="button" data-switch-auth="register">Create an account</button>';
+    }
+  }
 
-      if (authMode === "register") {
-        const fullNameInput = document.getElementById("fullName");
-        const fatherNameInput = document.getElementById("fatherName");
-        const confirmPasswordInput = document.getElementById("confirmPassword");
+  // فارم سبمٹ ہونے کا عمل
+  if (authForm) {
+    authForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const isRegistering = !nameField.hasAttribute('hidden');
 
-        const fullName = fullNameInput ? fullNameInput.value.trim() : "";
-        const fatherName = fatherNameInput ? fatherNameInput.value.trim() : "";
-        const confirmPassword = confirmPasswordInput ? confirmPasswordInput.value : "";
-
-        if (fullName.length < 2) {
-          if (authNotice) authNotice.textContent = "Please enter your full name.";
-          return;
-        }
-
-        if (fatherName.length < 2) {
-          if (authNotice) authNotice.textContent = "Please enter your father's name.";
-          return;
-        }
+      if (isRegistering) {
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
 
         if (password !== confirmPassword) {
-          if (authNotice) authNotice.textContent = "The passwords do not match.";
+          alert('پاس ورڈز میچ نہیں کر رہے۔');
           return;
         }
 
-        payload.name = fullName; // Apps Script doPost کے ساتھ مطابقت کے لیے 'name' رکھا ہے
-        payload.fullName = fullName;
-        payload.fatherName = fatherName;
-      }
+        authSubmitBtn.disabled = true;
+        authSubmitBtn.innerText = 'رجسٹریشن ہو رہی ہے...';
 
-      if (authNotice) authNotice.textContent = "Processing...";
-      if (authSubmitBtn) authSubmitBtn.disabled = true;
+        // آپ کی شیٹ کے کالمز کے مطابق ڈیٹا کا ڈھانچہ
+        const studentData = {
+          action: 'register',
+          Student_ID: 'STD-' + Math.floor(1000 + Math.random() * 9000),
+          Full_Name: document.getElementById('fullName').value,
+          Father_Name: document.getElementById('fatherName').value || 'N/A',
+          Email: document.getElementById('email').value,
+          Password: password, 
+          Country: 'Pakistan',
+          Province: 'Sindh',
+          City: 'Miro Khan',
+          Preferred_Language: 'Urdu',
+          Registration_Date: new Date().toISOString().split('T')[0],
+          Account_Status: 'Active'
+        };
 
-      try {
-        // text/plain کے ساتھ POST کی درخواست بھیجیں تاکہ CORS بلاک نہ ہو
-        const response = await fetch(WEB_APP_URL, {
-          method: "POST",
-          headers: {
-            "Content-Type": "text/plain;charset=utf-8"
-          },
-          body: JSON.stringify(payload)
+        // گوگل شیٹ کو بیک اینڈ کے ذریعے ڈیٹا بھیجنا
+        fetch(GOOGLE_SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(studentData)
+        })
+        .then(() => {
+          alert('Successfully completed!');
+          authModal.classList.remove('is-open');
+          authForm.reset();
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert('کچھ مسئلہ پیش آیا، دوبارہ کوشش کریں۔');
+        })
+        .finally(() => {
+          authSubmitBtn.disabled = false;
+          authSubmitBtn.innerText = 'Sign Up';
         });
 
-        const result = await response.json();
-
-        if (result.result === "success") {
-          if (authNotice) {
-            authNotice.textContent = authMode === "register"
-              ? "Registration successful! Saved to Google Sheet."
-              : "Login request processed!";
-          }
-          alert("کامیابی: ڈیٹا گوگل شیٹ میں بھیج دیا گیا ہے!");
-          closeAuth();
-        } else {
-          if (authNotice) authNotice.textContent = "Error: " + (result.error || "Failed to process request.");
-        }
-      } catch (error) {
-        console.error("Error:", error);
-        if (authNotice) {
-          authNotice.textContent = "Request sent! Please check your Google Sheet.";
-        }
-      } finally {
-        if (authSubmitBtn) authSubmitBtn.disabled = false;
+      } else {
+        alert('لاگ ان فیچر کی توثیق جاری ہے۔');
+        authModal.classList.remove('is-open');
       }
     });
   }
