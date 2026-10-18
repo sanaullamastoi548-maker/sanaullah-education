@@ -1,571 +1,65 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ur" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <meta
-    name="description"
-    content="Sanaullah Education - An online learning platform for students."
-  >
-
-  <meta name="theme-color" content="#6c5ce7">
-
-  <title>Sanaullah Education | Learn and Grow</title>
-
-  <link rel="stylesheet" href="style.css">
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-    rel="stylesheet"
-  >
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sanaullah Education - لاگ ان اور رجسٹریشن</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-  <!-- Navigation -->
-  <header class="site-header">
-    <nav class="navbar container">
-
-      <a href="#home" class="brand">
-        <span class="brand-icon">S</span>
-        <span>
-          <strong>Sanaullah</strong>
-          <small>Education</small>
-        </span>
-      </a>
-
-      <button
-        class="menu-toggle"
-        id="menuToggle"
-        type="button"
-        aria-label="Toggle navigation"
-        aria-expanded="false"
-      >
-        ☰
-      </button>
-
-      <div class="nav-links" id="navLinks">
-        <a href="#home">Home</a>
-        <a href="#courses">Courses</a>
-        <a href="#about">About</a>
-
-        <button
-          class="btn btn-outline"
-          type="button"
-          data-open-auth="login"
-        >
-          Login
-        </button>
-
-        <button
-          class="btn btn-primary"
-          type="button"
-          data-open-auth="register"
-        >
-          Get Started
-        </button>
-      </div>
-
-    </nav>
-  </header>
-
-
-  <main>
-
-    <!-- Hero Section -->
-    <section class="hero section" id="home">
-      <div class="container hero-grid">
-
-        <div class="hero-content">
-
-          <span class="eyebrow">
-            YOUR LEARNING JOURNEY STARTS HERE
-          </span>
-
-          <h1>
-            Learn Today.<br>
-            <span>Build Your Future.</span>
-          </h1>
-
-          <p class="hero-description">
-            Explore educational resources, discover new subjects,
-            and move forward with a learning experience designed
-            to help students grow.
-          </p>
-
-          <div class="hero-actions">
-
-            <button
-              class="btn btn-primary btn-large"
-              type="button"
-              data-open-auth="register"
-            >
-              Start Learning →
-            </button>
-
-            <a href="#courses" class="btn btn-outline btn-large">
-              Explore Subjects
-            </a>
-
-          </div>
-
-          <div class="hero-note">
-            <span class="status-dot"></span>
-            A smarter approach to online education
-          </div>
-
+    <!-- ہوم پیج کا مرکزی سیکشن -->
+    <header class="main-header">
+        <h1>Sanaullah Education میں خوش آمدید</h1>
+        <p>اپنے تعلیمی سفر کا آغاز کریں اور ہمارے ساتھ جڑیں</p>
+        <div class="auth-buttons">
+            <button class="btn-primary" data-open-auth="register">نیا اکاؤنٹ بنائیں (Sign Up)</button>
+            <button class="btn-secondary" data-open-auth="login">لاگ ان کریں (Sign In)</button>
         </div>
+    </header>
 
+    <!-- اتھینٹیکیشن ماڈل (مخفی ونڈو) -->
+    <div id="authModal" class="modal-overlay">
+        <div class="modal-container">
+            <button class="close-btn" data-close-modal>&times;</button>
+            <h2 id="authTitle">Create Account</h2>
+            
+            <form id="authForm">
+                <!-- صرف رجسٹریشن کے لیے فیلڈز -->
+                <div id="nameField" class="form-group">
+                    <label for="fullName">पूरा नाम (Full Name)</label>
+                    <input type="text" id="fullName" placeholder="अपना पूरा नाम दर्ज करें">
+                </div>
 
-        <div class="hero-visual">
+                <div id="fatherField" class="form-group">
+                    <label for="fatherName">والد کا نام (Father's Name)</label>
+                    <input type="text" id="fatherName" placeholder="والد کا نام درج کریں">
+                </div>
 
-          <div class="visual-glow"></div>
+                <div class="form-group">
+                    <label for="email">ای میل (Email Address)</label>
+                    <input type="email" id="email" required placeholder="name@example.com">
+                </div>
 
-          <div class="learning-card">
+                <div class="form-group">
+                    <label for="password">پاس ورڈ (Password)</label>
+                    <input type="password" id="password" required placeholder="कम से कम 6 حروف">
+                </div>
 
-            <div class="card-top">
-              <div>
-                <span class="muted-label">LEARNING SPACE</span>
-                <h3>Welcome to Learning</h3>
-              </div>
+                <div id="confirmPasswordField" class="form-group">
+                    <label for="confirmPassword">پاس ورڈ کی تصدیق (Confirm Password)</label>
+                    <input type="password" id="confirmPassword" placeholder="پاس ورڈ دوبارہ درج کریں">
+                </div>
 
-              <span class="card-icon">✦</span>
+                <button type="submit" id="authSubmitBtn" class="btn-submit">Sign Up</button>
+            </form>
+
+            <div id="authSwitch" class="auth-switch">
+                Already have an account? <button type="button" data-switch-auth="login">Login</button>
             </div>
-
-            <div class="learning-illustration">
-              <div class="book book-one"></div>
-              <div class="book book-two"></div>
-              <div class="book book-three"></div>
-              <div class="study-symbol">✎</div>
-            </div>
-
-            <div class="learning-card-footer">
-              <div>
-                <strong>Learn at your pace</strong>
-                <p>Explore. Practice. Improve.</p>
-              </div>
-
-              <span class="arrow-circle">↗</span>
-            </div>
-
-          </div>
-
-          <div class="floating-badge badge-top">
-            <span>✓</span>
-            Learning made simple
-          </div>
-
-          <div class="floating-badge badge-bottom">
-            <span>✦</span>
-            Your future starts here
-          </div>
-
         </div>
-
-      </div>
-    </section>
-
-
-    <!-- Features -->
-    <section class="features section">
-      <div class="container">
-
-        <div class="section-heading">
-          <span class="eyebrow">WHY SANAULLAH EDUCATION</span>
-          <h2>A Better Way to Learn</h2>
-          <p>
-            A simple foundation for a more organized learning journey.
-          </p>
-        </div>
-
-        <div class="feature-grid">
-
-          <article class="feature-card">
-            <div class="feature-icon purple">▤</div>
-            <h3>Organized Subjects</h3>
-            <p>
-              Find educational subjects and learning materials
-              in one organized place.
-            </p>
-          </article>
-
-          <article class="feature-card">
-            <div class="feature-icon orange">◎</div>
-            <h3>Student Accounts</h3>
-            <p>
-              Secure student accounts powered by Firebase
-              Authentication.
-            </p>
-          </article>
-
-          <article class="feature-card">
-            <div class="feature-icon green">↗</div>
-            <h3>Learning Progress</h3>
-            <p>
-              The platform is designed to support future
-              progress tracking and student learning journeys.
-            </p>
-          </article>
-
-        </div>
-      </div>
-    </section>
-
-
-    <!-- Courses -->
-    <section class="courses section" id="courses">
-      <div class="container">
-
-        <div class="section-heading">
-          <span class="eyebrow">EXPLORE AND DISCOVER</span>
-          <h2>Learning Categories</h2>
-          <p>
-            New subjects and courses can be added as the
-            education system develops.
-          </p>
-        </div>
-
-        <div class="course-grid">
-
-          <article class="course-card">
-            <div class="course-icon blue">01</div>
-            <h3>Computer Skills</h3>
-            <p>Build a foundation in digital and computer skills.</p>
-            <span class="course-status">Coming Soon</span>
-          </article>
-
-          <article class="course-card">
-            <div class="course-icon yellow">02</div>
-            <h3>English Language</h3>
-            <p>Develop communication and language skills.</p>
-            <span class="course-status">Coming Soon</span>
-          </article>
-
-          <article class="course-card">
-            <div class="course-icon pink">03</div>
-            <h3>Science & Knowledge</h3>
-            <p>Discover educational topics and new ideas.</p>
-            <span class="course-status">Coming Soon</span>
-          </article>
-
-          <article class="course-card">
-            <div class="course-icon green">04</div>
-            <h3>Digital Learning</h3>
-            <p>Explore modern tools and digital learning resources.</p>
-            <span class="course-status">Coming Soon</span>
-          </article>
-
-        </div>
-      </div>
-    </section>
-
-
-    <!-- About -->
-    <section class="about section" id="about">
-      <div class="container about-grid">
-
-        <div class="about-mark">
-          <div class="about-mark-inner">
-            <span>S</span>
-            <small>EDUCATION</small>
-          </div>
-        </div>
-
-        <div class="about-content">
-          <span class="eyebrow">ABOUT OUR PLATFORM</span>
-
-          <h2>Education Designed Around Students</h2>
-
-          <p>
-            Sanaullah Education is being developed as an online
-            learning platform where students can access educational
-            resources through a clear and organized experience.
-          </p>
-
-          <p>
-            The platform will progressively introduce student
-            accounts, course management, and other learning features.
-          </p>
-
-          <button
-            class="btn btn-primary"
-            type="button"
-            data-open-auth="register"
-          >
-            Join the Platform
-          </button>
-        </div>
-
-      </div>
-    </section>
-
-
-    <!-- Call to Action -->
-    <section class="cta-section section">
-      <div class="container">
-
-        <div class="cta-card">
-          <div>
-            <span class="eyebrow">YOUR NEXT CHAPTER</span>
-
-            <h2>Ready to Begin Your Learning Journey?</h2>
-
-            <p>
-              Create your account and begin your learning journey.
-            </p>
-          </div>
-
-          <button
-            class="btn btn-light btn-large"
-            type="button"
-            data-open-auth="register"
-          >
-            Get Started →
-          </button>
-        </div>
-
-      </div>
-    </section>
-
-  </main>
-
-
-  <!-- Authentication Modal -->
-  <div
-    class="modal"
-    id="authModal"
-    aria-hidden="true"
-  >
-
-    <div
-      class="modal-backdrop"
-      data-close-modal
-    ></div>
-
-    <section
-      class="auth-panel"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="authTitle"
-    >
-
-      <button
-        class="modal-close"
-        type="button"
-        aria-label="Close"
-        data-close-modal
-      >
-        ×
-      </button>
-
-      <div class="auth-brand">
-        <span class="brand-icon">S</span>
-      </div>
-
-      <h2 id="authTitle">Welcome Back</h2>
-
-      <p class="auth-description" id="authDescription">
-        Sign in to continue your learning journey.
-      </p>
-
-      <div
-        class="auth-notice"
-        id="authNotice"
-        role="status"
-        aria-live="polite"
-      >
-        Connect to your account securely.
-      </div>
-
-      <button
-        class="btn btn-google"
-        id="googleLoginBtn"
-        type="button"
-      >
-        <span class="google-letter">G</span>
-        Continue with Google
-      </button>
-
-      <div class="divider">
-        <span>or continue with email</span>
-      </div>
-
-      <form id="authForm">
-
-        <div id="nameField" class="form-group" hidden>
-          <label for="fullName">Full Name</label>
-
-          <input
-            id="fullName"
-            name="fullName"
-            type="text"
-            minlength="2"
-            maxlength="100"
-            autocomplete="name"
-            placeholder="Enter your full name"
-          >
-        </div>
-
-        <div id="fatherField" class="form-group" hidden>
-          <label for="fatherName">Father's Name</label>
-
-          <input
-            id="fatherName"
-            name="fatherName"
-            type="text"
-            maxlength="100"
-            autocomplete="off"
-            placeholder="Enter father's name"
-          >
-        </div>
-
-        <div class="form-group">
-          <label for="email">Email Address</label>
-
-          <input
-            id="email"
-            name="email"
-            type="email"
-            maxlength="254"
-            autocomplete="email"
-            required
-            placeholder="you@example.com"
-          >
-        </div>
-
-        <div id="passwordField" class="form-group">
-          <label for="password">Password</label>
-
-          <input
-            id="password"
-            name="password"
-            type="password"
-            autocomplete="current-password"
-            minlength="8"
-            required
-            placeholder="Enter your password"
-          >
-        </div>
-
-        <div id="confirmPasswordField" class="form-group" hidden>
-          <label for="confirmPassword">Confirm Password</label>
-
-          <input
-            id="confirmPassword"
-            name="confirmPassword"
-            type="password"
-            minlength="8"
-            autocomplete="new-password"
-            placeholder="Confirm your password"
-          >
-        </div>
-
-        <button
-          type="submit"
-          class="btn btn-primary auth-submit"
-          id="authSubmitBtn"
-        >
-          Sign In
-        </button>
-
-      </form>
-
-      <p class="auth-switch" id="authSwitch">
-        New student?
-        <button type="button" data-switch-auth="register">
-          Create an account
-        </button>
-      </p>
-
-      <p class="auth-footnote">
-        Your account is managed through Firebase Authentication
-        when the authentication integration is complete.
-      </p>
-
-    </section>
-
-  </div>
-
-
-  <!-- Footer -->
-  <footer class="site-footer">
-    <div class="container footer-inner">
-
-      <a href="#home" class="brand footer-brand">
-        <span class="brand-icon">S</span>
-
-        <span>
-          <strong>Sanaullah</strong>
-          <small>Education</small>
-        </span>
-      </a>
-
-      <p>
-        © <span id="currentYear"></span> Sanaullah Education.
-        All rights reserved.
-      </p>
-
-      <a href="#home" class="back-top">Back to top ↑</a>
-
     </div>
-  </footer>
 
-
-  <!-- Firebase Configuration and SDK -->
-  <script type="module">
-    import { initializeApp }
-      from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
-
-    import {
-      getAuth,
-      setPersistence,
-      browserLocalPersistence
-    } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
-
-    const firebaseConfig = {
-      apiKey: "YOUR_ACTUAL_FIREBASE_API_KEY"AIzaSyDDU-9cWCnsd9vUbntnsJFUqj4AR8O12MI",
-      authDomain: "sanaullah-education.firebaseapp.com",
-      projectId: "sanaullah-education",
-      storageBucket: "sanaullah-education.firebasestorage.app",
-      messagingSenderId: "127669918173",
-      appId: "1:127669918173:web:908fc76f6ba5c9a19ffe34"
-    };
-
-    try {
-      const app = initializeApp(firebaseConfig);
-      const auth = getAuth(app);
-
-      window.sanaullahFirebase = {
-        app,
-        auth,
-        setPersistence,
-        browserLocalPersistence
-      };
-
-      console.info("Firebase SDK initialized successfully.");
-
-      window.dispatchEvent(
-        new CustomEvent("firebase-ready", {
-          detail: { app, auth }
-        })
-      );
-
-    } catch (error) {
-      console.error("Firebase initialization failed:", error);
-
-      window.dispatchEvent(
-        new CustomEvent("firebase-init-error", {
-          detail: { message: error.message }
-        })
-      );
-    }
-  </script>
-
-  <!-- Existing JavaScript -->
-  <script src="script.js"></script>
-
+    <script src="script.js"></script>
 </body>
 </html>
