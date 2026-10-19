@@ -3,29 +3,36 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ScaleFlow University - Student Portal</title>
+  <title>Sanaullah Education - Student Portal</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
+  <!-- زبان تبدیل کرنے کا بٹن (Language Switcher) -->
+  <div class="lang-switcher">
+    <button id="langToggleBtn" class="lang-btn">English</button>
+  </div>
+
+  <!-- خوبصورت نوٹیفیکیشن باکس -->
+  <div id="customToast" class="toast-notification">
+    <span id="toastMessage">Successfully completed!</span>
+  </div>
+
   <!-- ================= AUTH CONTAINER ================= -->
   <div class="auth-container" id="authContainer">
     
-    <!-- Diagonal Background Overlay -->
-    <div class="diagonal-overlay"></div>
-
     <!-- Left Text Panel -->
-    <div class="yellow-text-panel">
-      <h1>WELCOME TO<br>SCALEFLOW<br>UNIVERSITY</h1>
-      <p style="margin-top: 15px; font-size: 14px; opacity: 0.9;">تعلیمی نظام کا جدید اور محفوظ پلیٹ فارم</p>
+    <div class="text-panel" id="textPanel">
+      <h1 id="brandTitle">WELCOME TO<br>SANAULLAH<br>EDUCATION</h1>
+      <p id="brandSubtitle" style="margin-top: 15px; font-size: 14px; opacity: 0.9;">تعلیمی نظام کا جدید اور محفوظ پلیٹ فارم</p>
     </div>
 
     <!-- Right Form Panel -->
-    <div class="white-form-panel">
+    <div class="form-panel" id="formPanel">
       
       <!-- SIGN UP FORM BOX -->
       <div class="form-content" id="signUpFormBox">
-        <h2 class="form-title">Sign Up</h2>
+        <h2 class="form-title" id="signUpTitle">Sign Up</h2>
         
         <form id="regForm">
           <div class="input-group">
@@ -44,15 +51,15 @@
             <input type="password" id="regPassword" placeholder="Password (پاس ورڈ)" required />
           </div>
 
-          <button type="submit" class="action-btn">Sign Up</button>
+          <button type="submit" class="action-btn" id="signUpBtnText">Sign Up</button>
         </form>
 
-        <p class="toggle-link">Already have an account? <span id="goToLogin">Login</span></p>
+        <p class="toggle-link"><span id="hasAccountText">Already have an account?</span> <span id="goToLogin">Login</span></p>
       </div>
 
       <!-- LOGIN FORM BOX -->
       <div class="form-content" id="loginFormBox" style="display: none;">
-        <h2 class="form-title">Login</h2>
+        <h2 class="form-title" id="loginTitle">Login</h2>
         
         <form id="loginForm">
           <div class="input-group">
@@ -63,10 +70,10 @@
             <input type="password" id="loginPassword" placeholder="Password (پاس ورڈ)" required />
           </div>
 
-          <button type="submit" class="action-btn">Login</button>
+          <button type="submit" class="action-btn" id="loginBtnText">Login</button>
         </form>
 
-        <p class="toggle-link">Don't have an account? <span id="goToSignUp">Sign Up</span></p>
+        <p class="toggle-link"><span id="noAccountText">Don't have an account?</span> <span id="goToSignUp">Sign Up</span></p>
       </div>
 
     </div>
@@ -74,15 +81,15 @@
 
   <!-- ================= DASHBOARD ================= -->
   <div class="website-dashboard" id="mainDashboard">
-    <div class="navbar">
-      <h1>SCALEFLOW UNIVERSITY</h1>
+    <div class="navbar" id="dashNavbar">
+      <h1 id="dashBrand">SANAULLAH EDUCATION</h1>
       <button class="logout-btn" id="logoutBtn">Logout</button>
     </div>
     <div class="dashboard-content">
       <div class="dashboard-card">
-        <h2>Welcome to ScaleFlow University!</h2>
+        <h2 id="dashWelcome">Welcome to Sanaullah Education!</h2>
         <p id="userEmailDisplay" style="margin-top: 10px; color: #666;"></p>
-        <p style="margin-top: 15px; color: #333; font-weight: 500;">آپ کا اکاؤنٹ کامیابی سے لاگ ان / رجسٹر ہو چکا ہے۔</p>
+        <p id="dashSubText" style="margin-top: 15px; color: #333; font-weight: 500;">آپ کا اکاؤنٹ کامیابی سے لاگ ان / رجسٹر ہو چکا ہے۔</p>
       </div>
     </div>
   </div>
