@@ -3,6 +3,7 @@
   padding: 0;
   box-sizing: border-box;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  transition: background-color 0.6s ease, color 0.6s ease;
 }
 
 body {
@@ -15,6 +16,44 @@ body {
   position: relative;
 }
 
+.lang-switcher {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 1000;
+}
+
+.lang-btn {
+  background: #111;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: bold;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.toast-notification {
+  position: fixed;
+  top: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #111;
+  color: #fff;
+  padding: 12px 25px;
+  border-radius: 30px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  z-index: 2000;
+  font-weight: bold;
+  transition: top 0.4s ease-in-out;
+}
+
+.toast-notification.show {
+  top: 20px;
+}
+
+/* مین اتھینٹیکیشن کارڈ */
 .auth-container {
   position: relative;
   width: 900px;
@@ -24,29 +63,18 @@ body {
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
   overflow: hidden;
   z-index: 10;
+  display: flex;
+  transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55);
 }
 
-/* Diagonal Split Layout matching your image */
-.diagonal-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: #111111; /* تصویر کی طرح کالا بیک گراؤنڈ پینل */
-  z-index: 1;
-  clip-path: polygon(0 0, 68% 0, 28% 100%, 0 100%);
-  transition: clip-path 0.7s ease-in-out;
+/* جب لاگ ان موڈ ہو تو کارڈ گھوم جائے گا */
+.auth-container.flip-layout {
+  flex-direction: row-reverse;
+  transform: rotateY(360deg);
 }
 
-.auth-container.active-login .diagonal-overlay {
-  clip-path: polygon(28% 0, 100% 0, 100% 100%, 68% 100%);
-}
-
-.yellow-text-panel {
-  position: absolute;
-  top: 0;
-  left: 0;
+/* بائیں جانب والا ٹیکسٹ پینل */
+.text-panel {
   width: 52%;
   height: 100%;
   display: flex;
@@ -54,23 +82,14 @@ body {
   justify-content: center;
   align-items: center;
   padding: 40px;
-  z-index: 2;
-  color: #ffffff;
+  background: #111111; /* بائی ڈیفالٹ سیاہ */
+  color: #ffffff;      /* الفاظ سفید */
   text-align: center;
+  position: relative;
 }
 
-.yellow-text-panel h1 {
-  font-size: 36px;
-  font-weight: 900;
-  line-height: 1.25;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-}
-
-.white-form-panel {
-  position: absolute;
-  top: 0;
-  right: 0;
+/* دائیں جانب والا فارم پینل */
+.form-panel {
   width: 48%;
   height: 100%;
   display: flex;
@@ -78,7 +97,60 @@ body {
   justify-content: center;
   align-items: center;
   padding: 40px;
-  z-index: 2;
+  background: #ffffff; /* بائی ڈیفالٹ سفید */
+  color: #111111;      /* الفاظ سیاہ */
+}
+
+/* جب کلاس بدلے گی تو رنگ بالکل الٹ (Invert) ہو جائیں گے */
+.auth-container.flip-layout .text-panel {
+  background: #ffffff;
+  color: #111111;
+}
+
+.auth-container.flip-layout .text-panel h1,
+.auth-container.flip-layout .text-panel p {
+  color: #111111;
+}
+
+.auth-container.flip-layout .form-panel {
+  background: #111111;
+  color: #ffffff;
+}
+
+.auth-container.flip-layout .form-title {
+  color: #ffffff !important;
+}
+
+.auth-container.flip-layout .toggle-link {
+  color: #ccc !important;
+}
+
+.auth-container.flip-layout .toggle-link span:last-child {
+  color: #ffd700 !important;
+}
+
+.auth-container.flip-layout input {
+  background: #222 !important;
+  color: #fff !important;
+  border-color: #444 !important;
+}
+
+.auth-container.flip-layout input::placeholder {
+  color: #aaa !important;
+}
+
+.auth-container.flip-layout .action-btn {
+  background: #ffffff !important;
+  color: #111111 !important;
+}
+
+/* جنرل فارم عناصر */
+.text-panel h1 {
+  font-size: 32px;
+  font-weight: 900;
+  line-height: 1.25;
+  text-transform: uppercase;
+  letter-spacing: 2px;
 }
 
 .form-content {
@@ -123,7 +195,7 @@ input {
 }
 
 .action-btn:hover {
-  background: #333;
+  opacity: 0.9;
 }
 
 .toggle-link {
@@ -133,7 +205,7 @@ input {
   text-align: center;
 }
 
-.toggle-link span {
+.toggle-link span:last-child {
   color: #111;
   font-weight: bold;
   cursor: pointer;
