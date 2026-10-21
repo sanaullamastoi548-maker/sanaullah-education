@@ -1,5 +1,9 @@
-const GOOGLE_SCRIPT_URL = https://script.google.com/macros/s/AKfycbxj6GVlkg56151m1G8eh7E1OIjM6SoV7HC8zvs5_LqGxWytkSaP0T3kJiHTaLSJmDhW/exec';
+// ==========================================
+// 1. Corrected Google Apps Script Web App URL
+// ==========================================
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxj6GVlkg56151m1G8eh7E1OIjM6SoV7HC8zvs5_LqGxWytkSaP0T3kJiHTaLSJmDhW/exec';
 
+// DOM Elements Selection
 const authContainer = document.getElementById('authContainer');
 const mainDashboard = document.getElementById('mainDashboard');
 const logoutBtn = document.getElementById('logoutBtn');
@@ -10,6 +14,7 @@ const loginFormBox = document.getElementById('loginFormBox');
 const goToLogin = document.getElementById('goToLogin');
 const goToSignUp = document.getElementById('goToSignUp');
 
+// Toast Notification Function
 function showToast(message) {
   const toast = document.getElementById('customToast');
   const toastMsg = document.getElementById('toastMessage');
@@ -21,7 +26,7 @@ function showToast(message) {
   }, 3000);
 }
 
-// زبان کی تبدیلی کا نظام (Urdu / English Switcher)
+// Language Switcher (Urdu / English)
 let currentLang = 'ur';
 const langToggleBtn = document.getElementById('langToggleBtn');
 
@@ -69,7 +74,7 @@ langToggleBtn.addEventListener('click', () => {
   }
 });
 
-// تھری ڈی فلپ اور پینل سویپ اینیمیشن
+// 3D Flip & Panel Swap Animation
 goToLogin.addEventListener('click', () => {
   signUpFormBox.style.display = 'none';
   loginFormBox.style.display = 'block';
@@ -82,7 +87,7 @@ goToSignUp.addEventListener('click', () => {
   authContainer.classList.remove('flip-layout');
 });
 
-// رجسٹریشن فارم سبمٹ ہونے پر شیٹ میں ڈیٹا بھیجنا
+// Registration Form Handler - Sends Data to Google Apps Script
 document.getElementById('regForm').addEventListener('submit', function(e) {
   e.preventDefault();
   
@@ -95,6 +100,7 @@ document.getElementById('regForm').addEventListener('submit', function(e) {
   submitBtn.disabled = true;
   submitBtn.innerText = 'Processing...';
 
+  // Data structure matching backend headers
   const studentRecord = {
     action: "register",
     Student_ID: "STD-" + Math.floor(10000 + Math.random() * 90000),
@@ -132,7 +138,7 @@ document.getElementById('regForm').addEventListener('submit', function(e) {
   });
 });
 
-// لاگ ان فارم ہینڈلر
+// Login Form Handler
 document.getElementById('loginForm').addEventListener('submit', function(e) {
   e.preventDefault();
   const email = document.getElementById('loginEmail').value;
