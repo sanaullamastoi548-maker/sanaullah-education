@@ -1,7 +1,8 @@
 // ==========================================
-// 1. Corrected Google Apps Script Web App URL
+// 1. Google Apps Script Web App URLs
 // ==========================================
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxj6GVlkg56151m1G8eh7E1OIjM6SoV7HC8zvs5_LqGxWytkSaP0T3kJiHTaLSJmDhW/exec';
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxj6GVlkg56151m1G8eh7E1OIjM6SoV7HC8zvs5_LqGxWytkSaP0T3kJiHTaLSJmDhW/exec'; // رجسٹریشن اور ای میل کا لنک
+const MEDIA_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxj6GVlkg56151m1G8eh7E1OIjM6SoV7HC8zvs5_LqGxWytkSaP0T3kJiHTaLSJmDhW/exec'; // ویڈیوز، آڈیوز اور تصاویر کا لنک (اگر آپ کا میڈیا اسی شیٹ میں ہے تو یہی URL کام کرے گا)
 
 // DOM Elements Selection
 const authContainer = document.getElementById('authContainer');
@@ -100,7 +101,6 @@ document.getElementById('regForm').addEventListener('submit', function(e) {
   submitBtn.disabled = true;
   submitBtn.innerText = 'Processing...';
 
-  // Data structure matching backend headers
   const studentRecord = {
     action: "register",
     Student_ID: "STD-" + Math.floor(10000 + Math.random() * 90000),
@@ -126,7 +126,7 @@ document.getElementById('regForm').addEventListener('submit', function(e) {
   })
   .then(() => {
     showToast('Successfully completed!');
-    openDashboard(email);
+    openDashboard(email); // رجسٹریشن کے بعد ڈیش بورڈ کھل جائے گا
   })
   .catch(error => {
     console.error('Error:', error);
@@ -143,15 +143,90 @@ document.getElementById('loginForm').addEventListener('submit', function(e) {
   e.preventDefault();
   const email = document.getElementById('loginEmail').value;
   showToast('Successfully completed!');
-  openDashboard(email);
+  openDashboard(email); // لاگ ان کے بعد ڈیش بورڈ کھل جائے گا
 });
+
+// ==========================================
+// Dashboard Opening & Media Fetching Logic
+// ==========================================
+let allMediaData = [];
 
 function openDashboard(email) {
   userEmailDisplay.innerText = "Logged in as: " + email;
   authContainer.style.display = 'none';
   mainDashboard.style.display = 'flex';
+  
+  // ڈیش بورڈ کھلتے ہی گوگل شیٹ سے ویڈیوز، آڈیوز اور تصاویر لوڈ ہوں گی
+  fetchMediaData();
 }
 
+function fetchMediaData() {
+  fetch(MEDIA_SCRIPT_URL)
+    .then(response => response.json())
+    .then(data => {
+      if(data.status === 'success' && data.media) {
+        allMediaData = data.media;
+        displayMedia(allMediaData);
+      }
+    })
+    .catch(err => console.error('Error fetching media:', err));
+}
+
+// اسکرین پر کارڈز (تصویر، وائس، ویڈیو) رینڈر کرنے کا فنکشن
+function displayMedia(mediaList) {
+  const container = document.getElementById('mediaContainer');
+  if (!container) return;
+  container.innerHTML = '';
+
+  mediaList.forEach(item => {
+    if(item.Status === 'Active') {
+      const card = `
+        <div style="background: #ffffff; border-radius: 12px; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08); overflow: hidden; padding: 18px; display: flex; flex-direction: column; gap: 12px;">
+          
+          <!-- تصویر -->
+          ${item.Direct_Image_URL ? `<img src="${item.Direct_Image_URL}" style="width: 100%; height: 180px; object-fit: cover; border-radius: 8px;" alt="${item.Title}">` : ''}
+          
+          <div>
+            <span style="background: #111; color: #fff; padding: 4px 12px; border-radius: 12px; font-size: 11px; font-weight: bold;">${item.Subject}</span>
+          </div>
+
+          <h3 style="font-size: 18px; color: #111; margin: 0;">${item.Title}</h3>
+          <p style="font-size: 13px; color: #555; margin: 0;">${item.Description}</p>
+
+          <!-- وائس / آڈیو پلیئر -->
+          ${item.Embed_Audio_URL ? `
+            <div>
+              <label style="font-size: 12px; font-weight: bold; color: #333;">🎙️ صوتی سبق (Audio):</label>
+              <iframe src="${item.Embed_Audio_URL}" width="100%" height="50" style="border:none; border-radius:6px; margin-top:5px;"></iframe>
+            </div>
+          ` : ''}
+
+          <!-- ویڈیو پلیئر -->
+          ${item.Embed_Video_URL ? `
+            <div>
+              <label style="font-size: 12px; font-weight: bold; color: #333;">🎥 ویڈیو سبق (Video):</label>
+              <iframe src="${item.Embed_Video_URL}" width="100%" height="200" style="border:none; border-radius:8px; margin-top:5px;" allow="autoplay"></iframe>
+            </div>
+          ` : ''}
+
+        </div>
+      `;
+      container.innerHTML += card;
+    }
+  });
+}
+
+// مضمون / زبان کے لحاظ سے فلٹر کرنے کا فنکشن
+function filterMedia(subject) {
+  if (subject === 'All') {
+    displayMedia(allMediaData);
+  } else {
+    const filtered = allMediaData.filter(m => m.Subject && m.Subject.trim().toLowerCase() === subject.trim().toLowerCase());
+    displayMedia(filtered);
+  }
+}
+
+// Logout Handler
 logoutBtn.addEventListener('click', () => {
   mainDashboard.style.display = 'none';
   authContainer.style.display = 'flex';
