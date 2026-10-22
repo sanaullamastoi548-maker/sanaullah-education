@@ -18,7 +18,7 @@
     <span id="toastMessage">Successfully completed!</span>
   </div>
 
-  <!-- ================= AUTH CONTAINER ================= -->
+  <!-- ================= AUTH CONTAINER (لاگ ان / رجسٹر فارم) ================= -->
   <div class="auth-container" id="authContainer">
     
     <!-- Left Text Panel -->
@@ -79,17 +79,33 @@
     </div>
   </div>
 
-  <!-- ================= DASHBOARD ================= -->
+  <!-- ================= DASHBOARD (ویڈیو، آڈیو اور تصاویر والا صفحہ) ================= -->
   <div class="website-dashboard" id="mainDashboard">
     <div class="navbar" id="dashNavbar">
       <h1 id="dashBrand">SANAULLAH EDUCATION</h1>
       <button class="logout-btn" id="logoutBtn">Logout</button>
     </div>
+
     <div class="dashboard-content">
+      <!-- ویلکم کارڈ -->
       <div class="dashboard-card">
         <h2 id="dashWelcome">Welcome to Sanaullah Education!</h2>
         <p id="userEmailDisplay" style="margin-top: 10px; color: #666;"></p>
-        <p id="dashSubText" style="margin-top: 15px; color: #333; font-weight: 500;">آپ کا اکاؤنٹ کامیابی سے لاگ ان / رجسٹر ہو چکا ہے۔</p>
+        <p id="dashSubText" style="margin-top: 10px; color: #333; font-weight: 500;">آپ کا اکاؤنٹ کامیابی سے لاگ ان / رجسٹر ہو چکا ہے۔</p>
+      </div>
+
+      <!-- مضمون / زبان فلٹر کرنے کے بٹن -->
+      <div class="subject-filter-buttons" style="text-align: center; margin: 25px 0;">
+        <button onclick="filterMedia('All')">سب / All</button>
+        <button onclick="filterMedia('English')">English</button>
+        <button onclick="filterMedia('اردو')">اردو</button>
+        <button onclick="filterMedia('عربی قائدہ')">عربی قائدہ</button>
+        <button onclick="filterMedia('سنڌھي')">سنڌھي</button>
+      </div>
+
+      <!-- تصاویر، وائس اور ویڈیوز دکھانے والا مین باکس -->
+      <div id="mediaContainer">
+        <!-- جاوا اسکرپٹ گوگل شیٹ سے تمام ویڈیوز اور امیجز خود بخود یہاں لوڈ کرے گی -->
       </div>
     </div>
   </div>
