@@ -1,8 +1,8 @@
 // ==========================================
 // 1. Google Apps Script Web App URLs
 // ==========================================
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxj6GVlkg56151m1G8eh7E1OIjM6SoV7HC8zvs5_LqGxWytkSaP0T3kJiHTaLSJmDhW/exec'; // رجسٹریشن اور ای میل کا لنک
-const MEDIA_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxj6GVlkg56151m1G8eh7E1OIjM6SoV7HC8zvs5_LqGxWytkSaP0T3kJiHTaLSJmDhW/exec'; // ویڈیوز، آڈیوز اور تصاویر کا لنک (اگر آپ کا میڈیا اسی شیٹ میں ہے تو یہی URL کام کرے گا)
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxj6GVlkg56151m1G8eh7E1OIjM6SoV7HC8zvs5_LqGxWytkSaP0T3kJiHTaLSJmDhW/exec'; // آپ کا نیا اور فائنل ڈپلয়েড لنک
+const MEDIA_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxj6GVlkg56151m1G8eh7E1OIjM6SoV7HC8zvs5_LqGxWytkSaP0T3kJiHTaLSJmDhW/exec'; // میڈیا اور ویڈیوز فیچ کرنے کے لیے بھی یہی لنک کام کرے گا
 
 // DOM Elements Selection
 const authContainer = document.getElementById('authContainer');
@@ -126,7 +126,7 @@ document.getElementById('regForm').addEventListener('submit', function(e) {
   })
   .then(() => {
     showToast('Successfully completed!');
-    openDashboard(email); // رجسٹریشن کے بعد ڈیش بورڈ کھل جائے گا
+    openDashboard(email);
   })
   .catch(error => {
     console.error('Error:', error);
@@ -143,7 +143,7 @@ document.getElementById('loginForm').addEventListener('submit', function(e) {
   e.preventDefault();
   const email = document.getElementById('loginEmail').value;
   showToast('Successfully completed!');
-  openDashboard(email); // لاگ ان کے بعد ڈیش بورڈ کھل جائے گا
+  openDashboard(email);
 });
 
 // ==========================================
@@ -156,7 +156,7 @@ function openDashboard(email) {
   authContainer.style.display = 'none';
   mainDashboard.style.display = 'flex';
   
-  // ڈیش بورڈ کھلتے ہی گوگل شیٹ سے ویڈیوز، آڈیوز اور تصاویر لوڈ ہوں گی
+  // ڈیش بورڈ کھلتے ہی شیٹ سے ویڈیوز، آڈیوز اور تصاویر لائیو لوڈ ہوں گی
   fetchMediaData();
 }
 
