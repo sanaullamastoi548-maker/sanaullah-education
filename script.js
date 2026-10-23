@@ -1,5 +1,5 @@
 // ==========================================
-// 1. Google Apps Script Web App URL
+// 1. Google Apps Script Web App URLs
 // ==========================================
 const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxj6GVlkg56151m1G8eh7E1OIjM6SoV7HC8zvs5_LqGxWytkSaP0T3kJiHTaLSJmDhW/exec';
 const MEDIA_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxj6GVlkg56151m1G8eh7E1OIjM6SoV7HC8zvs5_LqGxWytkSaP0T3kJiHTaLSJmDhW/exec';
@@ -27,7 +27,7 @@ function showToast(message) {
   }, 3000);
 }
 
-// Language Switcher
+// Language Switcher (Urdu / English)
 let currentLang = 'ur';
 const langToggleBtn = document.getElementById('langToggleBtn');
 
@@ -88,7 +88,7 @@ goToSignUp.addEventListener('click', () => {
   authContainer.classList.remove('flip-layout');
 });
 
-// Registration
+// Registration Form Handler
 document.getElementById('regForm').addEventListener('submit', function(e) {
   e.preventDefault();
   
@@ -138,7 +138,7 @@ document.getElementById('regForm').addEventListener('submit', function(e) {
   });
 });
 
-// Login
+// Login Form Handler
 document.getElementById('loginForm').addEventListener('submit', function(e) {
   e.preventDefault();
   const email = document.getElementById('loginEmail').value;
@@ -163,19 +163,18 @@ function fetchMediaData() {
     .then(data => {
       if(data.status === 'success' && data.media) {
         allMediaData = data.media;
-        generateSubjectButtons(allMediaData); // خود بخود سبجیکٹ بٹن بنانے والا فنکشن
-        displayMedia(allMediaData); // تمام میڈیا کارڈز دکھانا
+        generateSubjectButtons(allMediaData); // خود بخود تمام سبجیکٹس کے فلٹر بٹن بنائے گا
+        displayMedia(allMediaData); // ویڈیوز، آڈیوز اور تصاویر سکرین پر شو کرے گا
       }
     })
     .catch(err => console.error('Error fetching media:', err));
 }
 
-// خود بخود شیٹ کے تمام سبجیکٹس کے فلٹر بٹن بنانے کا فنکشن
+// خود بخود شیٹ سے سبجیکٹس کے بٹن بنانے کا فنکشن (بار بار کوڈ بدلنے کی ضرورت نہیں)
 function generateSubjectButtons(mediaList) {
   const btnContainer = document.querySelector('.subject-filter-buttons');
   if (!btnContainer) return;
 
-  // شیٹ سے تمام منفرد (Unique) سبجیکٹس حاصل کرنا
   const subjects = ['All'];
   mediaList.forEach(item => {
     if (item.Subject && !subjects.includes(item.Subject.trim())) {
@@ -183,9 +182,8 @@ function generateSubjectButtons(mediaList) {
     }
   });
 
-  btnContainer.innerHTML = ''; // پرانے بٹنز صاف کریں
+  btnContainer.innerHTML = '';
 
-  // ہر نئے اور پرانے سبجیکٹ کے لیے بٹن بنائیں
   subjects.forEach(sub => {
     const btn = document.createElement('button');
     btn.innerText = sub === 'All' ? 'سب / All' : sub;
@@ -194,7 +192,7 @@ function generateSubjectButtons(mediaList) {
   });
 }
 
-// اسکرین پر کارڈز رینڈر کرنے کا فنکشن
+// فائنل اور بہترین رینڈرنگ فنکشن (گوگل ڈرائیو پلے بٹن کے ساتھ)
 function displayMedia(mediaList) {
   const container = document.getElementById('mediaContainer');
   if (!container) return;
@@ -202,69 +200,6 @@ function displayMedia(mediaList) {
 
   mediaList.forEach(item => {
     if(item.Status === 'Active') {
-      const card = `
-        <div style="background: #ffffff; border-radius: 12px; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08); overflow: hidden; padding: 18px; display: flex; flex-direction: column; gap: 12px;">
-          
-          ${item.Direct_Image_URL ? `<img src="${item.Direct_Image_URL}" style="width: 100%; height: 180px; object-fit: cover; border-radius: 8px;" alt="${item.Title}">` : ''}
-          
-          <div>
-            <span style="background: #111; color: #fff; padding: 4px 12px; border-radius: 12px; font-size: 11px; font-weight: bold;">${item.Subject}</span>
-          </div>
-
-          <h3 style="font-size: 18px; color: #111; margin: 0;">${item.Title}</h3>
-          <p style="font-size: 13px; color: #555; margin: 0;">${item.Description}</p>
-
-          ${item.Embed_Audio_URL ? `
-            <div>
-              <label style="font-size: 12px; font-weight: bold; color: #333;">🎙️ صوتی سبق (Audio):</label>
-              <iframe src="${item.Embed_Audio_URL}" width="100%" height="50" style="border:none; border-radius:6px; margin-top:5px;"></iframe>
-            </div>
-          ` : ''}
-
-          ${item.Embed_Video_URL ? `
-            <div>
-              <label style="font-size: 12px; font-weight: bold; color: #333;">🎥 ویڈیو سبق (Video):</label>
-              <iframe src="${item.Embed_Video_URL}" width="100%" height="200" style="border:none; border-radius:8px; margin-top:5px;" allow="autoplay"></iframe>
-            </div>
-          ` : ''}
-
-        </div>
-      `;
-      container.innerHTML += card;
-    }
-  });
-}
-
-// فلٹر فنکشن
-function filterMedia(subject) {
-  if (subject === 'All' || subject === 'سب / All') {
-    displayMedia(allMediaData);
-  } else {
-    const filtered = allMediaData.filter(m => m.Subject && m.Subject.trim().toLowerCase() === subject.trim().toLowerCase());
-    displayMedia(filtered);
-  }
-}
-
-// اسکرین پر کارڈز اور پلے/پاز بٹن کے ساتھ رینڈر کرنے کا نیا فنکشن
-function displayMedia(mediaList) {
-  const container = document.getElementById('mediaContainer');
-  if (!container) return;
-  container.innerHTML = '';
-
-  mediaList.forEach((item, index) => {
-    if(item.Status === 'Active') {
-      
-      // گوگل ڈرائیو کے لنک کو ڈائریکٹ پلے ایبل لنک میں تبدیل کرنا
-      let directVideoUrl = item.Embed_Video_URL;
-      if (directVideoUrl && directVideoUrl.includes('/preview')) {
-        directVideoUrl = directVideoUrl.replace('/preview', '/export=download');
-      }
-
-      let directAudioUrl = item.Embed_Audio_URL;
-      if (directAudioUrl && directAudioUrl.includes('/preview')) {
-        directAudioUrl = directAudioUrl.replace('/preview', '/export=download');
-      }
-
       const card = `
         <div style="background: #ffffff; border-radius: 12px; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08); overflow: hidden; padding: 18px; display: flex; flex-direction: column; gap: 12px;">
           
@@ -278,25 +213,19 @@ function displayMedia(mediaList) {
           <h3 style="font-size: 18px; color: #111; margin: 0;">${item.Title}</h3>
           <p style="font-size: 13px; color: #555; margin: 0;">${item.Description}</p>
 
-          <!-- صوتی سبق (Audio Player with Play/Pause) -->
-          ${directAudioUrl ? `
+          <!-- صوتی سبق (Audio Player) -->
+          ${item.Embed_Audio_URL ? `
             <div style="background: #f8f9fa; padding: 10px; border-radius: 8px; border: 1px solid #ddd;">
               <label style="font-size: 12px; font-weight: bold; color: #333; display: block; margin-bottom: 5px;">🎙️ صوتی سبق (Audio):</label>
-              <audio id="audio_${index}" src="${directAudioUrl}" preload="none" style="width: 100%; display: none;"></audio>
-              <div style="display: flex; gap: 10px;">
-                <button onclick="togglePlayAudio('audio_${index}', this)" style="background: #111; color: #fff; border: none; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 13px;">▶ پلے (Play)</button>
-              </div>
+              <iframe src="${item.Embed_Audio_URL}" width="100%" height="80" style="border:none; border-radius:6px;" allow="autoplay"></iframe>
             </div>
           ` : ''}
 
-          <!-- ویڈیو سبق (Video Player with Play/Pause) -->
-          ${directVideoUrl ? `
+          <!-- ویڈیو سبق (Video Player with Play Button) -->
+          ${item.Embed_Video_URL ? `
             <div style="background: #f8f9fa; padding: 10px; border-radius: 8px; border: 1px solid #ddd;">
               <label style="font-size: 12px; font-weight: bold; color: #333; display: block; margin-bottom: 5px;">🎥 ویڈیو سبق (Video):</label>
-              <video id="video_${index}" src="${directVideoUrl}" preload="none" style="width: 100%; max-height: 220px; border-radius: 6px; background: #000; display: none;"></video>
-              <div style="display: flex; gap: 10px; margin-top: 5px;">
-                <button onclick="togglePlayVideo('video_${index}', this)" style="background: #111; color: #fff; border: none; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 13px;">▶ ویڈیو پلے کریں</button>
-              </div>
+              <iframe src="${item.Embed_Video_URL}" width="100%" height="220" style="border:none; border-radius:8px;" allow="autoplay" allowfullscreen></iframe>
             </div>
           ` : ''}
 
@@ -307,37 +236,15 @@ function displayMedia(mediaList) {
   });
 }
 
-// آڈیو پلے اور پاز کرنے کا فنکشن
-function togglePlayAudio(audioId, btn) {
-  const audio = document.getElementById(audioId);
-  audio.style.display = 'block';
-  if (audio.paused) {
-    audio.play();
-    btn.innerText = '⏸ روکیں (Pause)';
-    btn.style.background = '#d9534f';
+// فلٹر کرنے کا فنکشن
+function filterMedia(subject) {
+  if (subject === 'All' || subject === 'سب / All') {
+    displayMedia(allMediaData);
   } else {
-    audio.pause();
-    btn.innerText = '▶ پلے (Play)';
-    btn.style.background = '#111';
+    const filtered = allMediaData.filter(m => m.Subject && m.Subject.trim().toLowerCase() === subject.trim().toLowerCase());
+    displayMedia(filtered);
   }
 }
-
-// ویڈیو پلے اور پاز کرنے کا فنکشن
-function togglePlayVideo(videoId, btn) {
-  const video = document.getElementById(videoId);
-  video.style.display = 'block';
-  if (video.paused) {
-    video.play();
-    btn.innerText = '⏸ ویڈیو روکیں (Pause)';
-    btn.style.background = '#d9534f';
-  } else {
-    video.pause();
-    btn.innerText = '▶ ویڈیو پلے کریں';
-    btn.style.background = '#111';
-  }
-}
-
-
 
 // Logout Handler
 logoutBtn.addEventListener('click', () => {
@@ -345,5 +252,3 @@ logoutBtn.addEventListener('click', () => {
   authContainer.style.display = 'flex';
   showToast('Logged out successfully!');
 });
-
-
