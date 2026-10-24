@@ -1,115 +1,180 @@
 <!DOCTYPE html>
 <html lang="ur" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sanaullah Education - Student Portal</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sanaullah Education - Student Portal</title>
+    <!-- CSS File Link -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- زبان تبدیل کرنے کا بٹن (Language Switcher) -->
-  <div class="lang-switcher">
-    <button id="langToggleBtn" class="lang-btn">English</button>
-  </div>
+<!-- AUTHENTICATION CONTAINER -->
+<div class="auth-container" id="authContainer">
 
-  <!-- خوبصورت نوٹیفیکیشن باکس -->
-  <div id="customToast" class="toast-notification">
-    <span id="toastMessage">Successfully completed!</span>
-  </div>
+    <div class="diagonal-overlay"></div>
 
-  <!-- ================= AUTH CONTAINER (لاگ ان / رجسٹر فارم) ================= -->
-  <div class="auth-container" id="authContainer">
-    
-    <!-- Left Text Panel -->
-    <div class="text-panel" id="textPanel">
-      <h1 id="brandTitle">WELCOME TO<br>SANAULLAH<br>EDUCATION</h1>
-      <p id="brandSubtitle" style="margin-top: 15px; font-size: 14px; opacity: 0.9;">تعلیمی نظام کا جدید اور محفوظ پلیٹ فارم</p>
-    </div>
+    <!-- LOGIN FORM: BLACK SIDE -->
+    <section class="form-box login-box">
 
-    <!-- Right Form Panel -->
-    <div class="form-panel" id="formPanel">
-      
-      <!-- SIGN UP FORM BOX -->
-      <div class="form-content" id="signUpFormBox">
-        <h2 class="form-title" id="signUpTitle">Sign Up</h2>
-        
-        <form id="regForm">
-          <div class="input-group">
-            <input type="text" id="regFullName" placeholder="Full Name (پورا نام)" required />
-          </div>
+        <h1 class="welcome-heading">
+            WELCOME<br>BACK!
+        </h1>
 
-          <div class="input-group">
-            <input type="text" id="regFatherName" placeholder="Father's Name (والد کا نام)" required />
-          </div>
+        <p class="welcome-description">
+            Sanaullah Education میں خوش آمدید۔ پڑھائی جاری رکھنے کے لیے لاگ اِن کریں۔
+        </p>
 
-          <div class="input-group">
-            <input type="email" id="regEmail" placeholder="Email (ای میل)" required />
-          </div>
+        <h2>LOGIN</h2>
+        <p class="subtitle">اپنے اکاؤنٹ میں لاگ اِن کریں</p>
 
-          <div class="input-group">
-            <input type="password" id="regPassword" placeholder="Password (پاس ورڈ)" required />
-          </div>
-
-          <button type="submit" class="action-btn" id="signUpBtnText">Sign Up</button>
-        </form>
-
-        <p class="toggle-link"><span id="hasAccountText">Already have an account?</span> <span id="goToLogin">Login</span></p>
-      </div>
-
-      <!-- LOGIN FORM BOX -->
-      <div class="form-content" id="loginFormBox" style="display: none;">
-        <h2 class="form-title" id="loginTitle">Login</h2>
-        
         <form id="loginForm">
-          <div class="input-group">
-            <input type="email" id="loginEmail" placeholder="Email (ای میل)" required />
-          </div>
 
-          <div class="input-group">
-            <input type="password" id="loginPassword" placeholder="Password (پاس ورڈ)" required />
-          </div>
+            <div class="input-group">
+                <label for="loginEmail">ای میل (Email)</label>
+                <input
+                    type="email"
+                    id="loginEmail"
+                    placeholder="اپنا ای میل درج کریں"
+                    autocomplete="email"
+                    required
+                >
+            </div>
 
-          <button type="submit" class="action-btn" id="loginBtnText">Login</button>
+            <div class="input-group">
+                <label for="loginPassword">پاسورڈ (Password)</label>
+                <input
+                    type="password"
+                    id="loginPassword"
+                    placeholder="پاسورڈ درج کریں"
+                    autocomplete="current-password"
+                    required
+                >
+            </div>
+
+            <button type="submit" class="btn">
+                لاگ اِن کریں (Login)
+            </button>
+
+            <p id="loginMessage" class="message"></p>
+
         </form>
 
-        <p class="toggle-link"><span id="noAccountText">Don't have an account?</span> <span id="goToSignUp">Sign Up</span></p>
-      </div>
+        <p class="switch-text">
+            نئے طالب علم ہیں؟
+            <button type="button" class="switch-btn" id="toRegister">
+                نیا اکاؤنٹ بنائیں (Register Now)
+            </button>
+        </p>
 
-    </div>
-  </div>
+    </section>
 
-  <!-- ================= DASHBOARD (ویڈیو، آڈیو اور تصاویر والا صفحہ) ================= -->
-  <div class="website-dashboard" id="mainDashboard">
-    <div class="navbar" id="dashNavbar">
-      <h1 id="dashBrand">SANAULLAH EDUCATION</h1>
-      <button class="logout-btn" id="logoutBtn">Logout</button>
+    <!-- REGISTER FORM: WHITE SIDE -->
+    <section class="form-box register-box">
+
+        <h2>REGISTER</h2>
+        <p class="subtitle">نیا طالب علم اکاؤنٹ بنائیں</p>
+
+        <form id="regForm">
+
+            <div class="input-group">
+                <label for="regName">پورا نام (Full Name)</label>
+                <input
+                    type="text"
+                    id="regName"
+                    placeholder="اپنا پورا نام لکھیں"
+                    minlength="2"
+                    autocomplete="name"
+                    required
+                >
+            </div>
+
+            <div class="input-group">
+                <label for="regFatherName">والد کا نام (Father Name)</label>
+                <input
+                    type="text"
+                    id="regFatherName"
+                    placeholder="والد کا نام لکھیں"
+                    minlength="2"
+                    required
+                >
+            </div>
+
+            <div class="input-group">
+                <label for="regEmail">ای میل (Email)</label>
+                <input
+                    type="email"
+                    id="regEmail"
+                    placeholder="ای میل ایڈریس درج کریں"
+                    autocomplete="email"
+                    required
+                >
+            </div>
+
+            <div class="input-group">
+                <label for="regPassword">پاسورڈ (Password)</label>
+                <input
+                    type="password"
+                    id="regPassword"
+                    placeholder="کم از کم 8 حروف کا پاسورڈ"
+                    minlength="8"
+                    autocomplete="new-password"
+                    required
+                >
+            </div>
+
+            <button type="submit" class="btn" id="regBtnText">
+                رجسٹر کریں (Register)
+            </button>
+
+            <p id="regMessage" class="message"></p>
+
+        </form>
+
+        <p class="switch-text">
+            پہلے سے اکاؤنٹ موجود ہے؟
+            <button type="button" class="switch-btn" id="toLogin">
+                لاگ اِن کریں (Login)
+            </button>
+        </p>
+
+    </section>
+
+</div>
+
+<!-- DASHBOARD -->
+<div class="website-dashboard" id="mainDashboard">
+
+    <div class="navbar">
+        <h1>SANAULLAH EDUCATION</h1>
+        <button class="logout-btn" id="logoutBtn">
+            لاگ آؤٹ (Logout)
+        </button>
     </div>
 
     <div class="dashboard-content">
-      <!-- ویلکم کارڈ -->
-      <div class="dashboard-card">
-        <h2 id="dashWelcome">Welcome to Sanaullah Education!</h2>
-        <p id="userEmailDisplay" style="margin-top: 10px; color: #666;"></p>
-        <p id="dashSubText" style="margin-top: 10px; color: #333; font-weight: 500;">آپ کا اکاؤنٹ کامیابی سے لاگ ان / رجسٹر ہو چکا ہے۔</p>
-      </div>
 
-      <!-- مضمون / زبان فلٹر کرنے کے بٹن -->
-      <div class="subject-filter-buttons" style="text-align: center; margin: 25px 0;">
-        <button onclick="filterMedia('All')">سب / All</button>
-        <button onclick="filterMedia('English')">English</button>
-        <button onclick="filterMedia('اردو')">اردو</button>
-        <button onclick="filterMedia('عربی قائدہ')">عربی قائدہ</button>
-        <button onclick="filterMedia('سنڌھي')">سنڌھي</button>
-      </div>
+        <div class="dashboard-card">
+            <h2>
+                خوش آمدید،
+                <span id="userDisplayName">Student</span>!
+            </h2>
+            <p>
+                آپ Sanaullah Education کے پورٹل میں کامیابی سے لاگ اِن ہو چکے ہیں۔
+            </p>
+            <p id="studentInfo" style="margin-top:15px; font-weight: 700; color: #111;"></p>
+        </div>
 
-      <!-- تصاویر، وائس اور ویڈیوز دکھانے والا مین باکس -->
-      <div id="mediaContainer">
-        <!-- جاوا اسکرپٹ گوگل شیٹ سے تمام ویڈیوز اور امیجز خود بخود یہاں لوڈ کرے گی -->
-      </div>
+        <!-- کورسز اور ویڈیوز کا ایریا (آگے جوڑنے کے لیے تیار) -->
+        <div class="subject-filter-buttons" style="text-align: center; margin: 25px 0;"></div>
+        <div id="mediaContainer"></div>
+
     </div>
-  </div>
 
-  <script src="script.js"></script>
+</div>
+
+<!-- JavaScript File Link -->
+<script src="script.js"></script>
+
 </body>
 </html>
