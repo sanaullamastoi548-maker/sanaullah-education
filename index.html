@@ -1,179 +1,106 @@
 <!DOCTYPE html>
-<html lang="ur" dir="rtl">
+<html lang="ur" dir="ltr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sanaullah Education - Student Portal</title>
-    <!-- CSS File Link -->
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sanaullah Education - Student Portal</title>
+
+<!-- فونٹس اور آئیکنز -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<!-- CSS فائل کا لنک -->
+<link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<!-- AUTHENTICATION CONTAINER -->
-<div class="auth-container" id="authContainer">
+<!-- نوٹیفیکیشن ٹوسٹ -->
+<div id="customToast" class="toast-notification">
+    <span id="toastMessage">کامیاب!</span>
+</div>
 
+<!-- لاگ ان اور رجسٹر فارم -->
+<div class="auth-container" id="authContainer">
     <div class="diagonal-overlay"></div>
 
-    <!-- LOGIN FORM: BLACK SIDE -->
     <section class="form-box login-box">
-
-        <h1 class="welcome-heading">
-            WELCOME<br>BACK!
-        </h1>
-
-        <p class="welcome-description">
-            Sanaullah Education میں خوش آمدید۔ پڑھائی جاری رکھنے کے لیے لاگ اِن کریں۔
-        </p>
-
+        <h1>WELCOME<br>BACK!</h1>
+        <p>Sanaullah Education پورٹل میں خوش آمدید۔</p>
         <h2>LOGIN</h2>
-        <p class="subtitle">اپنے اکاؤنٹ میں لاگ اِن کریں</p>
-
         <form id="loginForm">
-
             <div class="input-group">
-                <label for="loginEmail">ای میل (Email)</label>
-                <input
-                    type="email"
-                    id="loginEmail"
-                    placeholder="اپنا ای میل درج کریں"
-                    autocomplete="email"
-                    required
-                >
+                <label>Email</label>
+                <input type="email" id="loginEmail" placeholder="ای میل درج کریں" required>
             </div>
-
             <div class="input-group">
-                <label for="loginPassword">پاسورڈ (Password)</label>
-                <input
-                    type="password"
-                    id="loginPassword"
-                    placeholder="پاسورڈ درج کریں"
-                    autocomplete="current-password"
-                    required
-                >
+                <label>Password</label>
+                <input type="password" id="loginPassword" placeholder="پاسورڈ درج کریں" required>
             </div>
-
-            <button type="submit" class="btn">
-                لاگ اِن کریں (Login)
-            </button>
-
-            <p id="loginMessage" class="message"></p>
-
+            <button type="submit" class="btn">Login</button>
         </form>
-
-        <p class="switch-text">
-            نئے طالب علم ہیں؟
-            <button type="button" class="switch-btn" id="toRegister">
-                نیا اکاؤنٹ بنائیں (Register Now)
-            </button>
-        </p>
-
+        <p style="margin-top:15px; font-size:12px;">نیا اکاؤنٹ بنانا ہے؟ <button type="button" class="switch-btn" id="toRegister">Register Now</button></p>
     </section>
 
-    <!-- REGISTER FORM: WHITE SIDE -->
     <section class="form-box register-box">
-
         <h2>REGISTER</h2>
-        <p class="subtitle">نیا طالب علم اکاؤنٹ بنائیں</p>
-
         <form id="regForm">
-
             <div class="input-group">
-                <label for="regName">پورا نام (Full Name)</label>
-                <input
-                    type="text"
-                    id="regName"
-                    placeholder="اپنا پورا نام لکھیں"
-                    minlength="2"
-                    autocomplete="name"
-                    required
-                >
+                <label>Full Name</label>
+                <input type="text" id="regFullName" placeholder="پورا نام" required>
             </div>
-
             <div class="input-group">
-                <label for="regFatherName">والد کا نام (Father Name)</label>
-                <input
-                    type="text"
-                    id="regFatherName"
-                    placeholder="والد کا نام لکھیں"
-                    minlength="2"
-                    required
-                >
+                <label>Father Name</label>
+                <input type="text" id="regFatherName" placeholder="والد کا نام" required>
             </div>
-
             <div class="input-group">
-                <label for="regEmail">ای میل (Email)</label>
-                <input
-                    type="email"
-                    id="regEmail"
-                    placeholder="ای میل ایڈریس درج کریں"
-                    autocomplete="email"
-                    required
-                >
+                <label>Email</label>
+                <input type="email" id="regEmail" placeholder="ای میل" required>
             </div>
-
             <div class="input-group">
-                <label for="regPassword">پاسورڈ (Password)</label>
-                <input
-                    type="password"
-                    id="regPassword"
-                    placeholder="کم از کم 8 حروف کا پاسورڈ"
-                    minlength="8"
-                    autocomplete="new-password"
-                    required
-                >
+                <label>Password</label>
+                <input type="password" id="regPassword" placeholder="پاسورڈ" required>
             </div>
-
-            <button type="submit" class="btn" id="regBtnText">
-                رجسٹر کریں (Register)
-            </button>
-
-            <p id="regMessage" class="message"></p>
-
+            <button type="submit" class="btn" id="signUpBtnText">Register Now</button>
         </form>
-
-        <p class="switch-text">
-            پہلے سے اکاؤنٹ موجود ہے؟
-            <button type="button" class="switch-btn" id="toLogin">
-                لاگ اِن کریں (Login)
-            </button>
-        </p>
-
+        <p style="margin-top:15px; font-size:12px;">پہلے سے اکاؤنٹ ہے؟ <button type="button" class="switch-btn" id="toLogin">Login</button></p>
     </section>
-
 </div>
 
-<!-- DASHBOARD -->
+<!-- شاندار ڈیش بورڈ (اسکرین شاٹ جیسا) -->
 <div class="website-dashboard" id="mainDashboard">
+    
+    <header class="dash-header">
+        <div class="dash-logo-area">
+            <div class="dash-logo-icon">📖</div>
+            <div class="dash-logo-text">
+                <h1>SANAULLAH EDUCATION</h1>
+            </div>
+        </div>
+        <div class="dash-header-right">
+            <button class="lang-dropdown-btn">
+                <i class="fa-solid fa-globe"></i> English <i class="fa-solid fa-chevron-down" style="font-size:10px;"></i>
+            </button>
+            <button class="profile-avatar-btn" id="logoutBtn" title="لاگ آؤٹ / Logout">
+                <i class="fa-solid fa-user"></i>
+            </button>
+        </div>
+    </header>
 
-    <div class="navbar">
-        <h1>SANAULLAH EDUCATION</h1>
-        <button class="logout-btn" id="logoutBtn">
-            لاگ آؤٹ (Logout)
-        </button>
-    </div>
-
-    <div class="dashboard-content">
-
-        <div class="dashboard-card">
-            <h2>
-                خوش آمدید،
-                <span id="userDisplayName">Student</span>!
-            </h2>
-            <p>
-                آپ Sanaullah Education کے پورٹل میں کامیابی سے لاگ اِن ہو چکے ہیں۔
-            </p>
-            <p id="studentInfo" style="margin-top:15px; font-weight: 700; color: #111;"></p>
+    <div class="dash-main-container">
+        <div class="hero-banner">
+            <div class="hero-text">
+                <h2>Welcome to Sanaullah Education</h2>
+                <p id="userEmailDisplay">Logged in as: student@example.com</p>
+                <span class="hero-tagline">Learn &bull; Grow &bull; Build a Better Future</span>
+            </div>
+            <div class="hero-icon-graphic" style="font-size: 50px;">🎓</div>
         </div>
 
-        <!-- کورسز اور ویڈیوز کا ایریا (آگے جوڑنے کے لیے تیار) -->
-        <div class="subject-filter-buttons" style="text-align: center; margin: 25px 0;"></div>
+        <div class="subject-filter-buttons"></div>
         <div id="mediaContainer"></div>
-
     </div>
-
 </div>
 
-<!-- JavaScript File Link -->
+<!-- جاوا اسکرپٹ فائل کا لنک -->
 <script src="script.js"></script>
 
 </body>
