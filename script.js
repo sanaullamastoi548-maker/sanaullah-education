@@ -1,10 +1,10 @@
 // ==========================================
-// 1. Google Apps Script Web App URL
+// 1. Google Apps Script Web App URLs
 // ==========================================
 const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxj6GVlkg56151m1G8eh7E1OIjM6SoV7HC8zvs5_LqGxWytkSaP0T3kJiHTaLSJmDhW/exec';
 const MEDIA_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxj6GVlkg56151m1G8eh7E1OIjM6SoV7HC8zvs5_LqGxWytkSaP0T3kJiHTaLSJmDhW/exec';
 
-// DOM Elements Selection
+// DOM ELEMENTS
 const authContainer = document.getElementById("authContainer");
 const mainDashboard = document.getElementById("mainDashboard");
 
@@ -24,41 +24,28 @@ function showMessage(element, text, type) {
     element.className = "message " + type;
 }
 
-// SWITCH TO REGISTER
-const toRegisterBtn = document.getElementById("toRegister");
-if (toRegisterBtn) {
-    toRegisterBtn.addEventListener("click", function() {
-        authContainer.classList.add("active");
-        showMessage(regMessage, "", "");
-    });
-}
+// SWITCH TO REGISTER (ترچھا پینل حرکت کرے گا)
+document.getElementById("toRegister").addEventListener("click", function() {
+    authContainer.classList.add("active");
+    showMessage(regMessage, "", "");
+});
 
 // SWITCH TO LOGIN
-const toLoginBtn = document.getElementById("toLogin");
-if (toLoginBtn) {
-    toLoginBtn.addEventListener("click", function() {
-        authContainer.classList.remove("active");
-        showMessage(loginMessage, "", "");
-    });
-}
+document.getElementById("toLogin").addEventListener("click", function() {
+    authContainer.classList.remove("active");
+    showMessage(loginMessage, "", "");
+});
 
 // REGISTER SUBMIT HANDLER
 regForm.addEventListener("submit", function(event) {
     event.preventDefault();
 
-    const nameInput = document.getElementById("regName") || document.getElementById("regFullName");
-    const fatherInput = document.getElementById("regFatherName");
-    const emailInput = document.getElementById("regEmail");
-    const passwordInput = document.getElementById("regPassword");
+    const name = document.getElementById("regName").value.trim();
+    const fatherName = document.getElementById("regFatherName").value.trim();
+    const email = document.getElementById("regEmail").value.trim().toLowerCase();
+    const password = document.getElementById("regPassword").value;
 
-    const name = nameInput ? nameInput.value.trim() : "";
-    const fatherName = fatherInput ? fatherInput.value.trim() : "";
-    const email = emailInput ? emailInput.value.trim().toLowerCase() : "";
-    const password = passwordInput ? passwordInput.value : "";
-
-    const regBtn = document.querySelector("#regForm button[type='submit']");
-    const originalBtnText = regBtn ? regBtn.innerText : "Register Now";
-
+    const regBtn = document.getElementById("regBtnText");
     if (regBtn) {
         regBtn.disabled = true;
         regBtn.innerText = "پروسیسنگ... (Processing)";
@@ -79,7 +66,7 @@ regForm.addEventListener("submit", function(event) {
         Account_Status: "Active"
     };
 
-    // Send Data to Google Apps Script
+    // Send Data to Google Sheet
     fetch(GOOGLE_SCRIPT_URL, {
         method: 'POST',
         mode: 'no-cors',
@@ -101,7 +88,7 @@ regForm.addEventListener("submit", function(event) {
     .finally(() => {
         if (regBtn) {
             regBtn.disabled = false;
-            regBtn.innerText = originalBtnText;
+            regBtn.innerText = "رجسٹر کریں (Register)";
         }
     });
 });
@@ -110,8 +97,8 @@ regForm.addEventListener("submit", function(event) {
 loginForm.addEventListener("submit", function(event) {
     event.preventDefault();
 
-    const emailInput = document.getElementById("loginEmail");
-    const email = emailInput ? emailInput.value.trim().toLowerCase() : "";
+    const email = document.getElementById("loginEmail").value.trim().toLowerCase();
+    const password = document.getElementById("loginPassword").value;
 
     showMessage(loginMessage, "لاگ اِن کامیاب!", "success");
 
@@ -128,7 +115,7 @@ loginForm.addEventListener("submit", function(event) {
     }, 600);
 });
 
-// OPEN DASHBOARD & FETCH MEDIA DATA
+// OPEN DASHBOARD & FETCH MEDIA
 function openDashboard(user) {
     const userDisplay = document.getElementById("userDisplayName");
     const studentInfo = document.getElementById("studentInfo");
@@ -141,7 +128,7 @@ function openDashboard(user) {
     authContainer.style.display = "none";
     mainDashboard.style.display = "flex";
 
-    // گوگل شیٹ سے آٹومیٹک ڈیٹا فیچ کرنا
+    // گوگل شیٹ سے ویڈیوز، آڈیوز اور تصاویر لائیو لوڈ کرنے کا فنکشن
     fetchMediaData();
 }
 
@@ -159,7 +146,7 @@ function fetchMediaData() {
         .catch(err => console.error('Error fetching media:', err));
 }
 
-// DYNAMIC SUBJECT BUTTONS GENERATOR
+// GENERATE SUBJECT FILTER BUTTONS AUTOMATICALLY
 function generateSubjectButtons(mediaList) {
     const btnContainer = document.querySelector('.subject-filter-buttons');
     if (!btnContainer) return;
@@ -190,7 +177,7 @@ function displayMedia(mediaList) {
     mediaList.forEach(item => {
         if(item.Status === 'Active') {
             const card = `
-                <div style="background: #ffffff; border-radius: 12px; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08); overflow: hidden; padding: 18px; display: flex; flex-direction: column; gap: 12px; text-align: right; direction: rtl;">
+                <div style="background: #ffffff; border-radius: 12px; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08); overflow: hidden; padding: 18px; display: flex; flex-direction: column; gap: 12px; text-align: right; direction: rtl; margin-bottom: 20px;">
                     
                     ${item.Direct_Image_URL ? `<img src="${item.Direct_Image_URL}" style="width: 100%; height: 180px; object-fit: cover; border-radius: 8px;" alt="${item.Title}">` : ''}
                     
@@ -232,19 +219,16 @@ function filterMedia(subject) {
     }
 }
 
-// LOGOUT
-const logoutBtn = document.getElementById("logoutBtn");
-if (logoutBtn) {
-    logoutBtn.addEventListener("click", function() {
-        currentUser = null;
-        mainDashboard.style.display = "none";
-        authContainer.style.display = "block";
-        authContainer.classList.remove("active");
+// LOGOUT HANDLER
+document.getElementById("logoutBtn").addEventListener("click", function() {
+    currentUser = null;
+    mainDashboard.style.display = "none";
+    authContainer.style.display = "block";
+    authContainer.classList.remove("active");
 
-        if (loginForm) loginForm.reset();
-        if (regForm) regForm.reset();
+    loginForm.reset();
+    regForm.reset();
 
-        showMessage(loginMessage, "", "");
-        showMessage(regMessage, "", "");
-    });
-}
+    showMessage(loginMessage, "", "");
+    showMessage(regMessage, "", "");
+});
