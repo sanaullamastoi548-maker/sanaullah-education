@@ -94,7 +94,7 @@ function generateSubjectButtons(mediaList) {
     });
 }
 
-// میڈیا کارڈز جنریٹ کرنے کا فنکشن (بہترین اور منظم بڑے پلے/پاز بٹنوں کے ساتھ)
+// میڈیا کارڈز جنریٹ کرنے کا فنکشن (آئی فریم کے ساتھ جو فوراً پلے ہو گا)
 function displayMedia(mediaList) {
     const container = document.getElementById('mediaContainer');
     if (!container) return;
@@ -102,18 +102,6 @@ function displayMedia(mediaList) {
 
     mediaList.forEach((item, index) => {
         if(item.Status === 'Active') {
-            
-            // گوگل ڈرائیو کے لنکس کو ڈائریکٹ پلے ایبل فارمیٹ میں بدلنا
-            let directAudioUrl = item.Embed_Audio_URL;
-            if (directAudioUrl && directAudioUrl.includes('/preview')) {
-                directAudioUrl = directAudioUrl.replace('/preview', '/export=download');
-            }
-
-            let directVideoUrl = item.Embed_Video_URL;
-            if (directVideoUrl && directVideoUrl.includes('/preview')) {
-                directVideoUrl = directVideoUrl.replace('/preview', '/export=download');
-            }
-
             const card = `
                 <div class="lesson-card">
                     <div class="lesson-thumb-container">
@@ -125,23 +113,27 @@ function displayMedia(mediaList) {
                         <h3>${item.Title}</h3>
                         <p>${item.Description}</p>
 
-                        <!-- صوتی سبق (Audio Player with Custom Controls) -->
-                        ${directAudioUrl ? `
+                        <!-- صوتی سبق (Audio Player using iframe) -->
+                        ${item.Embed_Audio_URL ? `
                             <div style="background: #f8fafc; padding: 15px; border-radius: 12px; border: 1px solid #e2e8f0; margin-bottom: 15px;">
                                 <label style="font-size: 13px; font-weight: bold; color: #1e293b; display: block; margin-bottom: 10px;">🎙️ صوتی سبق (Audio):</label>
-                                <audio id="audio_${index}" src="${directAudioUrl}" preload="none" style="width: 100%; display: none;"></audio>
-                                <button onclick="togglePlayAudio('audio_${index}', this)" style="width: 100%; background: #0f172a; color: #fff; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 15px; display: flex; justify-content: center; align-items: center; gap: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); transition: 0.3s;">
-                                    <i class="fa-solid fa-play" style="font-size: 16px;"></i> پلے کریں (Play Audio)
+                                <div id="audio_box_${index}" style="display: none; margin-bottom: 10px;">
+                                    <iframe src="${item.Embed_Audio_URL}" width="100%" height="90" style="border:none; border-radius:8px;" allow="autoplay"></iframe>
+                                </div>
+                                <button onclick="toggleIframeAudio('audio_box_${index}', this)" style="width: 100%; background: #0f172a; color: #fff; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 15px; display: flex; justify-content: center; align-items: center; gap: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); transition: 0.3s;">
+                                    <i class="fa-solid fa-play" style="font-size: 16px;"></i> صوتی سبق پلے کریں (Play Audio)
                                 </button>
                             </div>
                         ` : ''}
 
-                        <!-- ویڈیو سبق (Video Player with Custom Controls) -->
-                        ${directVideoUrl ? `
+                        <!-- ویڈیو سبق (Video Player using iframe) -->
+                        ${item.Embed_Video_URL ? `
                             <div style="background: #f8fafc; padding: 15px; border-radius: 12px; border: 1px solid #e2e8f0;">
                                 <label style="font-size: 13px; font-weight: bold; color: #1e293b; display: block; margin-bottom: 10px;">🎥 ویڈیو سبق (Video):</label>
-                                <video id="video_${index}" src="${directVideoUrl}" preload="none" style="width: 100%; max-height: 240px; border-radius: 8px; background: #000; display: none; margin-bottom: 10px;" controls></video>
-                                <button onclick="togglePlayVideo('video_${index}', this)" style="width: 100%; background: #d97706; color: #fff; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 15px; display: flex; justify-content: center; align-items: center; gap: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); transition: 0.3s;">
+                                <div id="video_box_${index}" style="display: none; margin-bottom: 10px;">
+                                    <iframe src="${item.Embed_Video_URL}" width="100%" height="220" style="border:none; border-radius:8px;" allow="autoplay" allowfullscreen></iframe>
+                                </div>
+                                <button onclick="toggleIframeVideo('video_box_${index}', this)" style="width: 100%; background: #d97706; color: #fff; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 15px; display: flex; justify-content: center; align-items: center; gap: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); transition: 0.3s;">
                                     <i class="fa-solid fa-play" style="font-size: 16px;"></i> ویڈیو پلے کریں (Play Video)
                                 </button>
                             </div>
@@ -154,33 +146,31 @@ function displayMedia(mediaList) {
     });
 }
 
-// آڈیو پلے/پاز ٹوگل فنکشن
-function togglePlayAudio(audioId, btn) {
-    const audio = document.getElementById(audioId);
-    audio.style.display = 'block';
+// آڈیو آئی فریم کو کھولنے اور بند کرنے کا فنکشن
+function toggleIframeAudio(boxId, btn) {
+    const box = document.getElementById(boxId);
     
-    if (audio.paused) {
-        audio.play();
-        btn.innerHTML = '<i class="fa-solid fa-pause" style="font-size: 16px;"></i> صوتی سبق روکیں (Pause Audio)';
-        btn.style.background = '#ef4444'; // سرخ رنگ (Pause کے لیے)
+    if (box.style.display === 'none') {
+        box.style.display = 'block';
+        btn.innerHTML = '<i class="fa-solid fa-pause" style="font-size: 16px;"></i> صوتی سبق بند کریں (Close Audio)';
+        btn.style.background = '#ef4444'; // سرخ رنگ
     } else {
-        audio.pause();
-        btn.innerHTML = '<i class="fa-solid fa-play" style="font-size: 16px;"></i> پلے کریں (Play Audio)';
-        btn.style.background = '#0f172a'; // ڈارک بلیو رنگ (Play کے لیے)
+        box.style.display = 'none';
+        btn.innerHTML = '<i class="fa-solid fa-play" style="font-size: 16px;"></i> صوتی سبق پلے کریں (Play Audio)';
+        btn.style.background = '#0f172a'; // ڈارک بلیو رنگ
     }
 }
 
-// ویڈیو پلے/پاز ٹوگل فنکشن
-function togglePlayVideo(videoId, btn) {
-    const video = document.getElementById(videoId);
-    video.style.display = 'block';
+// ویڈیو آئی فریم کو کھولنے اور بند کرنے کا فنکشن
+function toggleIframeVideo(boxId, btn) {
+    const box = document.getElementById(boxId);
     
-    if (video.paused) {
-        video.play();
-        btn.innerHTML = '<i class="fa-solid fa-pause" style="font-size: 16px;"></i> ویڈیو روکیں (Pause Video)';
+    if (box.style.display === 'none') {
+        box.style.display = 'block';
+        btn.innerHTML = '<i class="fa-solid fa-pause" style="font-size: 16px;"></i> ویڈیو بند کریں (Close Video)';
         btn.style.background = '#ef4444';
     } else {
-        video.pause();
+        box.style.display = 'none';
         btn.innerHTML = '<i class="fa-solid fa-play" style="font-size: 16px;"></i> ویڈیو پلے کریں (Play Video)';
         btn.style.background = '#d97706';
     }
