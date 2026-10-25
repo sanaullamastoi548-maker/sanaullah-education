@@ -94,7 +94,7 @@ function generateSubjectButtons(mediaList) {
     });
 }
 
-// میڈیا رینڈر کرنے کا فنکشن (خوبصورت اور بڑے پلے/پاز بٹن کے ساتھ)
+// میڈیا کارڈز جنریٹ کرنے کا فنکشن (بہترین اور منظم بڑے پلے/پاز بٹنوں کے ساتھ)
 function displayMedia(mediaList) {
     const container = document.getElementById('mediaContainer');
     if (!container) return;
@@ -103,7 +103,7 @@ function displayMedia(mediaList) {
     mediaList.forEach((item, index) => {
         if(item.Status === 'Active') {
             
-            // گوگل ڈرائیو کے لنک کو ڈائریکٹ پلے ایبل فارمیٹ میں تبدیل کرنا
+            // گوگل ڈرائیو کے لنکس کو ڈائریکٹ پلے ایبل فارمیٹ میں بدلنا
             let directAudioUrl = item.Embed_Audio_URL;
             if (directAudioUrl && directAudioUrl.includes('/preview')) {
                 directAudioUrl = directAudioUrl.replace('/preview', '/export=download');
@@ -125,7 +125,7 @@ function displayMedia(mediaList) {
                         <h3>${item.Title}</h3>
                         <p>${item.Description}</p>
 
-                        <!-- صوتی سبق (Audio Player with Custom Big Button) -->
+                        <!-- صوتی سبق (Audio Player with Custom Controls) -->
                         ${directAudioUrl ? `
                             <div style="background: #f8fafc; padding: 15px; border-radius: 12px; border: 1px solid #e2e8f0; margin-bottom: 15px;">
                                 <label style="font-size: 13px; font-weight: bold; color: #1e293b; display: block; margin-bottom: 10px;">🎙️ صوتی سبق (Audio):</label>
@@ -136,7 +136,7 @@ function displayMedia(mediaList) {
                             </div>
                         ` : ''}
 
-                        <!-- ویڈیو سبق (Video Player with Custom Big Button) -->
+                        <!-- ویڈیو سبق (Video Player with Custom Controls) -->
                         ${directVideoUrl ? `
                             <div style="background: #f8fafc; padding: 15px; border-radius: 12px; border: 1px solid #e2e8f0;">
                                 <label style="font-size: 13px; font-weight: bold; color: #1e293b; display: block; margin-bottom: 10px;">🎥 ویڈیو سبق (Video):</label>
@@ -154,7 +154,7 @@ function displayMedia(mediaList) {
     });
 }
 
-// آڈیو پلے اور پاز کرنے کا فنکشن (لاک اور انلاک کے ساتھ)
+// آڈیو پلے/پاز ٹوگل فنکشن
 function togglePlayAudio(audioId, btn) {
     const audio = document.getElementById(audioId);
     audio.style.display = 'block';
@@ -162,15 +162,15 @@ function togglePlayAudio(audioId, btn) {
     if (audio.paused) {
         audio.play();
         btn.innerHTML = '<i class="fa-solid fa-pause" style="font-size: 16px;"></i> صوتی سبق روکیں (Pause Audio)';
-        btn.style.background = '#ef4444'; // سرخ رنگ جب پلے ہو رہا ہو
+        btn.style.background = '#ef4444'; // سرخ رنگ (Pause کے لیے)
     } else {
         audio.pause();
         btn.innerHTML = '<i class="fa-solid fa-play" style="font-size: 16px;"></i> پلے کریں (Play Audio)';
-        btn.style.background = '#0f172a'; // ڈارک نیوی بلیو جب بند ہو
+        btn.style.background = '#0f172a'; // ڈارک بلیو رنگ (Play کے لیے)
     }
 }
 
-// ویڈیو پلے اور پاز کرنے کا فنکشن (لاک اور انلاک کے ساتھ)
+// ویڈیو پلے/پاز ٹوگل فنکشن
 function togglePlayVideo(videoId, btn) {
     const video = document.getElementById(videoId);
     video.style.display = 'block';
